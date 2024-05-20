@@ -6,7 +6,8 @@ import shopRoutes from '../routes/shopRoutes.js'
 import employeeRoutes from '../routes/employeeRoutes.js'
 import customerRoutes from '../routes/customerRoutes.js'
 import creditRoutes from '../routes/creditRoutes.js'
-import expenseRoutes from '../routes/expenseRoutes.js'
+import expenseRoutes from '../routes/profitRoutes.js'
+import profitRoutes from '../routes/expenseRoutes.js'
 
 dotenv.config()
 console.log(process.env.MONGO_URI);
@@ -27,6 +28,7 @@ app.use("/api", employeeRoutes)
 app.use("/api", customerRoutes)
 app.use("/api", creditRoutes)
 app.use("/api", expenseRoutes)
+app.use("/api", profitRoutes)
 
 
 app.get("/", (req, res) => {
