@@ -14,7 +14,7 @@ const getEmployees = async (req, res) => {
 
 // add new employee
 const addEmployee = async (req, res) => {
-    const { name, role, address, phoneNumber, shop } = req.body
+    const { name, role, address, phone, shop } = req.body
     const { id } = req.params
     try {
 
@@ -25,7 +25,7 @@ const addEmployee = async (req, res) => {
             return res.status(404).json({ error: 'Shop not found ll' });
         }
 
-        const employee = await Employee.create({ name, role, address, phoneNumber, shop: assignedShop })
+        const employee = await Employee.create({ name, role, address, phone, shop: assignedShop })
         res.status(201).json({ message: 'employee added', employee })
     } catch (error) {
         res.status(500).json({ message: error.message })
@@ -63,14 +63,14 @@ const updateEmployee = async (req, res) => {
         employee.name = req.body.name || employee.name
         employee.role = req.body.role || employee.role
         employee.address = req.body.address || employee.address
-        employee.phoneNumber = req.body.phoneNumber || employee.phoneNumber
+        employee.phone = req.body.phone || employee.phone
         const updateEmployee = await employee.save();
         res.status(200).json({
             id: updateEmployee._id,
             name: updateEmployee.name,
             role: updateEmployee.role,
             address: updateEmployee.address,
-            phoneNumber: updateEmployee.phoneNumber
+            phone: updateEmployee.phone
 
         })
     } catch (error) {

@@ -13,7 +13,7 @@ const employeeSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    phoneNumber: {
+    phone: {
         type: Number,
         required: true
     },
@@ -26,7 +26,6 @@ const employeeSchema = mongoose.Schema({
 )
 
 const Employee = mongoose.model("Employee", employeeSchema)
-// const Shop = mongoose.model("Shop", shopSchema)
 
 
 export default Employee
