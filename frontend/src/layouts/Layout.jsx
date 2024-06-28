@@ -28,9 +28,9 @@ const Layout = () => {
 
         <Box
           component="main"
-          bgcolor="#0C3B3C"
+          // bgcolor="#0d1926"
           // bgcolor={_Colors.commonBgColor}
-          height="100vh"
+          // height="100vh"
           sx={{
             flexGrow: 1,
             p: 3,

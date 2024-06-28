@@ -3,11 +3,14 @@
     "myTheme": {
       "primary": {
         "main2": "#072E33",
-        "main": "#0F5052"
+        "main3": "#0F5052",
+        "main": "#0d1926"
       },
 
       "secondary": {
-        "main": "#177A7D"
+        "main2": "#177A7D",
+        "main": "#402d6c",
+        "content": "#112132"
       },
 
       "common": {

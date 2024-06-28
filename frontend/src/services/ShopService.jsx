@@ -17,12 +17,13 @@ const shopService = {
   },
 
   updateShop: async (id, shopData) => {
-    const response = await api.put(`/shops/${id}`, shopData);
+    const response = await api.put(`/updateshop/${id}`, shopData);
+    console.log("response>>>", response);
     return response.data;
   },
 
   deleteShop: async (id) => {
-    const response = await api.delete(`/shops/${id}`);
+    const response = await api.delete(`/deleteshop/${id}`);
     return response.data;
   },
 };

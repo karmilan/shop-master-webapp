@@ -5,10 +5,22 @@ const shopSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    location: {
+    address: {
         type: String,
-        // required: true
+        required: true
     },
+    phone: {
+        type: Number,
+    },
+    email: {
+        type: String,
+        unique: true,
+    },
+    status: {
+        type: String,
+        enum: ['Active', 'Inactive'],
+        default: 'Active',
+    }
 },
     { timestamps: true }
 )

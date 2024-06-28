@@ -1,63 +1,59 @@
-import AddIcon from "@mui/icons-material/Add";
 import CancelIcon from "@mui/icons-material/Close";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
+import {
+  Alert,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Snackbar,
+} from "@mui/material";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import {
   GridActionsCellItem,
   GridRowEditStopReasons,
   GridRowModes,
-  GridToolbarContainer,
 } from "@mui/x-data-grid";
-import React, { useEffect, useState } from "react";
-import Theme from "../../../styles/Theme.json";
+import * as React from "react";
+import { useState } from "react";
 import { StyledDataGrid } from "../../../templates/DataGrid/StyledDataGrid";
-// import { StyledDataGrid } from "../../../templates/DataGrid/StyledDataGrid";
+import UpdateSnackbar from "../Snackbar/UpdateSnackbar";
 
-function EditToolbar(props) {
-  const { setRows, setRowModesModel, createNewRow } = props;
+const GetDataGrid = ({
+  columns,
+  rows,
+  setRows,
+  loading,
+  setLoading,
+  processRowUpdate,
+  rowModesModel,
+  setRowModesModel,
+  openUpdateAlert,
+  setOpenUpdateAlert,
+  UpdateAlertSeverity,
+  handleDeleteClick,
+  deleteAlertOpen,
+  setDeleteAlertOpen,
+  deleteSnackbarOpen,
+  setDeleteSnackbarOpen,
+}) => {
+  const [alertSeverity, setAlertSeverity] = useState(); // State for alert severity
 
-  const handleClick = () => {
-    const newRow = createNewRow();
-    setRows((oldRows) => [...oldRows, newRow]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [newRow._id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-    }));
+  // --------------------------------------- delete dialog--------------------------------------
+  const [rowToDelete, setRowToDelete] = useState(null);
+
+  const handleClickOpen = (id) => () => {
+    console.log("id>>>>", id);
+    setRowToDelete(id);
+    setDeleteAlertOpen(true);
   };
 
-  return (
-    <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add record
-      </Button>
-    </GridToolbarContainer>
-  );
-}
-
-// const CommonDataGrid = ({ apiService, columns, createNewRow }) => {
-const ShopsDataGrid = ({ apiService, columns, createNewRow }) => {
-  const [rows, setRows] = useState([]);
-  const [rowModesModel, setRowModesModel] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchRows = async () => {
-      try {
-        const data = await apiService;
-        setRows(data);
-      } catch (err) {
-        setError("Failed to fetch data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRows();
-  }, [apiService]);
+  const handleClose = () => {
+    setDeleteAlertOpen(false);
+  };
+  // -------------------------------------------------------------------------------------------
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -69,23 +65,8 @@ const ShopsDataGrid = ({ apiService, columns, createNewRow }) => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id) => async () => {
-    try {
-      const row = rows.find((row) => row._id === id);
-      await apiService.update(id, row);
-      setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    } catch (err) {
-      setError("Failed to update data");
-    }
-  };
-
-  const handleDeleteClick = (id) => async () => {
-    try {
-      await apiService.delete(id);
-      setRows(rows.filter((row) => row._id !== id));
-    } catch (err) {
-      setError("Failed to delete data");
-    }
+  const handleSaveClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
   const handleCancelClick = (id) => () => {
@@ -94,94 +75,131 @@ const ShopsDataGrid = ({ apiService, columns, createNewRow }) => {
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = rows.find((row) => row._id === id);
+    const editedRow = rows.find((row) => row.id === id);
     if (editedRow.isNew) {
-      setRows(rows.filter((row) => row._id !== id));
+      setRows(rows.filter((row) => row.id !== id));
     }
-  };
-
-  const processRowUpdate = (newRow) => {
-    const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row._id === newRow._id ? updatedRow : row)));
-    return updatedRow;
   };
 
   const handleRowModesModelChange = (newRowModesModel) => {
     setRowModesModel(newRowModesModel);
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  const handleDeleteSnackbarAlertClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setDeleteSnackbarOpen(false);
+  };
+
+  const actionColumns = {
+    field: "actions",
+    type: "actions",
+    headerName: "Actions",
+    width: 100,
+    cellClassName: "actions",
+    getActions: ({ id }) => {
+      const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+      if (isInEditMode) {
+        return [
+          <GridActionsCellItem
+            icon={<SaveIcon />}
+            label="Save"
+            sx={{
+              color: "red !important",
+            }}
+            color="inherit"
+            onClick={handleSaveClick(id)}
+          />,
+          <GridActionsCellItem
+            icon={<CancelIcon />}
+            label="Cancel"
+            className="textPrimary"
+            onClick={handleCancelClick(id)}
+            color="inherit"
+          />,
+        ];
+      }
+
+      return [
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label="Edit"
+          onClick={handleEditClick(id)}
+          color="inherit"
+        />,
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label="Delete"
+          // onClick={handleDeleteClick(id)}
+          onClick={handleClickOpen(id)}
+          color="inherit"
+        />,
+      ];
+    },
+  };
 
   return (
-    <Box
-      sx={{
-        height: 500,
-        width: "100%",
-      }}
-    >
-      <StyledDataGrid
-        rows={rows}
-        columns={[
-          ...columns,
-          {
-            field: "actions",
-            type: "actions",
-            headerName: "Actions",
-            width: 100,
-            cellClassName: "actions",
-            getActions: ({ id }) => {
-              const isInEditMode =
-                rowModesModel[id]?.mode === GridRowModes.Edit;
+    <>
+      {/* --------------------------------alert-------------------------------- */}
 
-              if (isInEditMode) {
-                return [
-                  <GridActionsCellItem
-                    icon={<SaveIcon />}
-                    label="Save"
-                    sx={{ color: "primary.main" }}
-                    onClick={handleSaveClick(id)}
-                  />,
-                  <GridActionsCellItem
-                    icon={<CancelIcon />}
-                    label="Cancel"
-                    className="textPrimary"
-                    onClick={handleCancelClick(id)}
-                    color="inherit"
-                  />,
-                ];
-              }
-
-              return [
-                <GridActionsCellItem
-                  icon={<EditIcon />}
-                  label="Edit"
-                  // className="textPrimary"
-                  onClick={handleEditClick(id)}
-                  // color={Theme.palette.myTheme.common.white}
-                  sx={{ color: Theme.palette.myTheme.common.white }}
-                />,
-                <GridActionsCellItem
-                  icon={<DeleteIcon />}
-                  label="Delete"
-                  onClick={handleDeleteClick(id)}
-                  color="inherit"
-                />,
-              ];
-            },
-          },
-        ]}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        slots={{ toolbar: EditToolbar }}
-        slotProps={{ toolbar: { setRows, setRowModesModel, createNewRow } }}
-        getRowId={(row) => row._id}
+      <UpdateSnackbar
+        openAlert={openUpdateAlert}
+        setOpenAlert={setOpenUpdateAlert}
+        // alertSeverity={alertSeverity}
+        alertSeverity={UpdateAlertSeverity}
       />
-    </Box>
+      {/* ------------------------------------------------------------------------ */}
+
+      {/* ---------------------------------delete dialog alert component------------ */}
+      <Dialog open={deleteAlertOpen} onClose={handleClose}>
+        <DialogTitle>Are you sure you want to delete?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>No</Button>
+          <Button onClick={handleDeleteClick(rowToDelete)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={deleteSnackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleDeleteSnackbarAlertClose}
+      >
+        <Alert variant="filled" severity="error">
+          Data deleted successfully!
+        </Alert>
+      </Snackbar>
+      {/* -------------------------------------------------------------------------- */}
+      <Box
+        sx={{
+          height: 500,
+          width: "100%",
+          "& .actions": {
+            color: "text.secondary",
+          },
+          "& .textPrimary": {
+            color: "text.primary",
+          },
+        }}
+      >
+        <StyledDataGrid
+          rows={rows}
+          // columns={columns}
+          columns={[...columns, actionColumns]}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          slotProps={{
+            toolbar: { setRows, setRowModesModel },
+          }}
+        />
+      </Box>
+    </>
   );
 };
-
-export default ShopsDataGrid;
+export default GetDataGrid;
