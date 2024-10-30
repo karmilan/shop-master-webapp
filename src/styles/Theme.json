@@ -1,0 +1,24 @@
+{
+  "palette": {
+    "myTheme": {
+      "primary": {
+        "main2": "#072E33",
+        "main3": "#0F5052",
+        "main": "#0d1926"
+      },
+
+      "secondary": {
+        "main2": "#177A7D",
+        "main": "#402d6c",
+        "content": "#112132"
+      },
+
+      "common": {
+        "dark": "rgb(18, 18, 18)",
+        "light": "rgb(231, 235, 240)",
+        "black": "#000",
+        "white": "#FFFFFF"
+      }
+    }
+  }
+}
