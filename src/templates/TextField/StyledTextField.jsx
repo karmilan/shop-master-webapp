@@ -1,7 +1,9 @@
 import { TextField, styled } from "@mui/material";
 import Theme from "../../styles/Theme.json";
 
-export const StyledTextField = styled(TextField)({
+export const StyledTextField = styled((props) => (
+  <TextField {...props} size="small" />
+))({
   width: "90%",
   "& label.Mui-focused": {
     color: "#c4b7e1",

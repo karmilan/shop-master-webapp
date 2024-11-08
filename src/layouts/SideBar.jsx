@@ -38,6 +38,7 @@ const SideBar = ({
   const [shopOpen, setShopOpen] = useState(false);
   const [customerOpen, setCustomerOpen] = useState(false);
   const [employeeOpen, setEmployeeOpen] = useState(false);
+  const [dealerOpen, setDealerOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(!open);
@@ -53,6 +54,10 @@ const SideBar = ({
 
   const handleClickEmployee = () => {
     setEmployeeOpen(!employeeOpen);
+  };
+
+  const handleClickDealer = () => {
+    setDealerOpen(!dealerOpen);
   };
 
   const drawer = (
@@ -176,6 +181,49 @@ const SideBar = ({
             />
           </ListItemButton>
         </Link>
+      </List>
+
+      {/* ---------------------------------dealer management menu---------------------------------------- */}
+      <List sx={_SideBar.list}>
+        <ListItemButton onClick={handleClickDealer}>
+          <ListItemIcon sx={_SideBar.listItemIcon}>
+            <ManageAccountsIcon />
+          </ListItemIcon>
+          <ListItemText
+            primaryTypographyProps={_SideBar.listItemTextTypo}
+            primary="Dealer Management"
+          />
+          {dealerOpen ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+        <Collapse in={dealerOpen} timeout="auto" unmountOnExit>
+          {/* ///////////manage cash payment */}
+          <List component="div" disablePadding>
+            <Link style={_Router.link} to="/cashpayments">
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon sx={_SideBar.listItemIcon}>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={_SideBar.listItemTextTypo}
+                  primary="Manage Cash Payments"
+                />
+              </ListItemButton>
+            </Link>
+          </List>
+
+          {/* ///////////manage cheque payment */}
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon sx={_SideBar.listItemIcon}>
+                <AddCardIcon />
+              </ListItemIcon>
+              <ListItemText
+                primaryTypographyProps={_SideBar.listItemTextTypo}
+                primary="Manage Cheque Payments"
+              />
+            </ListItemButton>
+          </List>
+        </Collapse>
       </List>
 
       <Divider sx={{ borderColor: Theme.palette.myTheme.common.white }} />
