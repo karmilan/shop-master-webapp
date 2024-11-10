@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
-import AddCashPaymentAccordion from "../components/managecashpayments/AddCashPaymentAccordion";
-import cashPaymentService from "../services/CashPaymentService";
+import AddCheqPaymentAccordion from "../components/managecheqpayments/AddCheqPaymentAccordion";
+import cheqPaymentService from "../services/CheqPaymentService ";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import { StyledTextField } from "../templates/TextField/StyledTextField";
 
-const ManageCashPaymentsContainer = () => {
+const ManageCheqPaymentsContainer = () => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -28,16 +28,32 @@ const ManageCashPaymentsContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.cashPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.cheqPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
       row.dealer.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.chequeNumber.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.bankName.toLowerCase().includes(filterText.toLowerCase()) ||
       row.amount.toString().includes(filterText) ||
+      row.chequeDate.toLowerCase().includes(filterText.toLowerCase()) ||
       row.paymentDate.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for employee data grid-----------------------------
   const columns = [
-    { field: "cashPaymentId", headerName: "ID", width: 180, editable: false },
+    { field: "cheqPaymentId", headerName: "ID", width: 180, editable: false },
+    {
+      field: "chequeNumber",
+      headerName: "Cheque Number",
+      width: 180,
+      editable: false,
+    },
+    { field: "bankName", headerName: "Bank", width: 180, editable: true },
     { field: "dealer", headerName: "Dealer", width: 180, editable: true },
+    {
+      field: "chequeDate",
+      headerName: "Cheque Date",
+      width: 180,
+      editable: true,
+    },
     { field: "amount", headerName: "Amount", width: 100, editable: true },
     {
       field: "paymentDate",
@@ -45,6 +61,7 @@ const ManageCashPaymentsContainer = () => {
       width: 120,
       editable: true,
     },
+    { field: "isCleared", headerName: "Cleared", width: 100, editable: true },
     {
       field: "createdAt",
       headerName: "Create Data",
@@ -53,33 +70,34 @@ const ManageCashPaymentsContainer = () => {
   ];
 
   useEffect(() => {
-    // --------------------------------------get all cash payments function---------------------------------
-    const fetchCashPayments = async () => {
+    // --------------------------------------get all cheque payments function---------------------------------
+    const fetchCheqPayments = async () => {
       try {
-        const data = await cashPaymentService.getAllCashPayments();
+        const data = await cheqPaymentService.getAllCheqPayments();
         const mappedData = data.map((item) => ({
           ...item,
           id: item._id,
-          cashPaymentId: item.id,
+          cheqPaymentId: item.id,
           paymentDate: GetYearMonthDate(item.paymentDate),
+          chequeDate: GetYearMonthDate(item.chequeDate),
         }));
 
         setRows(mappedData);
       } catch (err) {
-        setError("Failed to fetch cash payments");
+        setError("Failed to fetch cheq payments");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCashPayments();
+    fetchCheqPayments();
   }, []);
 
-  // ------------------------------------update cash payment details function --------------------------------------
+  // ------------------------------------update cheque payment details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
     try {
-      await cashPaymentService.updateCashPayment(newRow.id, newRow);
+      await cheqPaymentService.updateCheqPayment(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -98,7 +116,7 @@ const ManageCashPaymentsContainer = () => {
   // ----------------------------------------delete cash payment----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await cashPaymentService.deleteCashPayment(id);
+      await cheqPaymentService.deleteCheqPayment(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -110,7 +128,7 @@ const ManageCashPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCashPaymentAccordion setRows={setRows} />
+        <AddCheqPaymentAccordion setRows={setRows} />
         <br />
 
         <StyledTextField
@@ -145,4 +163,4 @@ const ManageCashPaymentsContainer = () => {
   );
 };
 
-export default ManageCashPaymentsContainer;
+export default ManageCheqPaymentsContainer;

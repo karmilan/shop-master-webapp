@@ -28,4 +28,7 @@ export const StyledTextField = styled((props) => (
   "& .MuiInputBase-root": {
     color: Theme.palette.myTheme.common.white,
   },
+  "& .MuiPickersDay-root": {
+    backgroundColor: "#ffffff", // Sets the background of calendar dates to white
+  },
 });

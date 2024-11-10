@@ -213,15 +213,32 @@ const SideBar = ({
 
           {/* ///////////manage cheque payment */}
           <List component="div" disablePadding>
-            <ListItemButton sx={{ pl: 4 }}>
-              <ListItemIcon sx={_SideBar.listItemIcon}>
-                <AddCardIcon />
-              </ListItemIcon>
-              <ListItemText
-                primaryTypographyProps={_SideBar.listItemTextTypo}
-                primary="Manage Cheque Payments"
-              />
-            </ListItemButton>
+            <Link style={_Router.link} to="/cheqpayments">
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon sx={_SideBar.listItemIcon}>
+                  <AddCardIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={_SideBar.listItemTextTypo}
+                  primary="Manage Cheque Payments"
+                />
+              </ListItemButton>
+            </Link>
+          </List>
+
+          {/* ///////////manage credit payment */}
+          <List component="div" disablePadding>
+            <Link style={_Router.link} to="/credpayments">
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon sx={_SideBar.listItemIcon}>
+                  <AddCardIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={_SideBar.listItemTextTypo}
+                  primary="Manage Credit Payments"
+                />
+              </ListItemButton>
+            </Link>
           </List>
         </Collapse>
       </List>

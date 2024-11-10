@@ -2,12 +2,12 @@
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
-import AddCashPaymentAccordion from "../components/managecashpayments/AddCashPaymentAccordion";
-import cashPaymentService from "../services/CashPaymentService";
+import AddCredPaymentAccordion from "../components/managecredpayments/AddCredPaymentAccordion";
+import credPaymentService from "../services/CredPaymentService ";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import { StyledTextField } from "../templates/TextField/StyledTextField";
 
-const ManageCashPaymentsContainer = () => {
+const ManageCredPaymentsContainer = () => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -28,23 +28,31 @@ const ManageCashPaymentsContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.cashPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.credPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
       row.dealer.toLowerCase().includes(filterText.toLowerCase()) ||
       row.amount.toString().includes(filterText) ||
+      row.dueDate.toLowerCase().includes(filterText.toLowerCase()) ||
       row.paymentDate.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for employee data grid-----------------------------
   const columns = [
-    { field: "cashPaymentId", headerName: "ID", width: 180, editable: false },
+    { field: "credPaymentId", headerName: "ID", width: 180, editable: false },
     { field: "dealer", headerName: "Dealer", width: 180, editable: true },
     { field: "amount", headerName: "Amount", width: 100, editable: true },
+    {
+      field: "dueDate",
+      headerName: "Due Date",
+      width: 180,
+      editable: true,
+    },
     {
       field: "paymentDate",
       headerName: "Payment Date",
       width: 120,
       editable: true,
     },
+    { field: "isPaid", headerName: "Paid", width: 100, editable: true },
     {
       field: "createdAt",
       headerName: "Create Data",
@@ -53,33 +61,34 @@ const ManageCashPaymentsContainer = () => {
   ];
 
   useEffect(() => {
-    // --------------------------------------get all cash payments function---------------------------------
-    const fetchCashPayments = async () => {
+    // --------------------------------------get all credit payments function---------------------------------
+    const fetchCredPayments = async () => {
       try {
-        const data = await cashPaymentService.getAllCashPayments();
+        const data = await credPaymentService.getAllCredPayments();
         const mappedData = data.map((item) => ({
           ...item,
           id: item._id,
-          cashPaymentId: item.id,
+          credPaymentId: item.id,
           paymentDate: GetYearMonthDate(item.paymentDate),
+          dueDate: GetYearMonthDate(item.dueDate),
         }));
 
         setRows(mappedData);
       } catch (err) {
-        setError("Failed to fetch cash payments");
+        setError("Failed to fetch cred payments");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCashPayments();
+    fetchCredPayments();
   }, []);
 
-  // ------------------------------------update cash payment details function --------------------------------------
+  // ------------------------------------update credit payment details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
     try {
-      await cashPaymentService.updateCashPayment(newRow.id, newRow);
+      await credPaymentService.updateCredPayment(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -95,10 +104,10 @@ const ManageCashPaymentsContainer = () => {
     }
   };
 
-  // ----------------------------------------delete cash payment----------------------------------------------------
+  // ----------------------------------------delete credit payment----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await cashPaymentService.deleteCashPayment(id);
+      await credPaymentService.deleteCredPayment(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -110,7 +119,7 @@ const ManageCashPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCashPaymentAccordion setRows={setRows} />
+        <AddCredPaymentAccordion setRows={setRows} />
         <br />
 
         <StyledTextField
@@ -145,4 +154,4 @@ const ManageCashPaymentsContainer = () => {
   );
 };
 
-export default ManageCashPaymentsContainer;
+export default ManageCredPaymentsContainer;

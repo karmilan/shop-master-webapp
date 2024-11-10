@@ -2,6 +2,8 @@ import { Box, Toolbar } from "@mui/material";
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import ManageCashPaymentsPage from "../pages/ManageCashPaymentsPage";
+import ManageCheqPaymentsPage from "../pages/ManageCheqPaymentsPage";
+import ManageCredPaymentsPage from "../pages/ManageCredPaymentsPage";
 import ManageCustomersPage from "../pages/ManageCustomersPage";
 import ManageEmployeesPage from "../pages/ManageEmployeesPage";
 import ManageExpensesPage from "../pages/ManageExpensesPage";
@@ -57,6 +59,12 @@ const Layout = () => {
           </Routes>
           <Routes>
             <Route path="/cashpayments" element={<ManageCashPaymentsPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/cheqpayments" element={<ManageCheqPaymentsPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/credpayments" element={<ManageCredPaymentsPage />} />
           </Routes>
         </Box>
       </Box>

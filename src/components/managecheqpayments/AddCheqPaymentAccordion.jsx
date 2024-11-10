@@ -14,25 +14,25 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import cashPaymentService from "../../services/CashPaymentService";
+import cheqPaymentService from "../../services/CheqPaymentService ";
 import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
-const AddCashPaymentAccordion = ({ setRows }) => {
+const AddCheqPaymentAccordion = ({ setRows }) => {
   const [id, setId] = useState("");
+  const [chequeNumber, setChequeNumber] = useState("");
+  const [bankName, setBankName] = useState("");
   const [amount, setAmount] = useState("");
+  const [chequeDate, setChequeDate] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
-  // const [phone, setPhone] = useState("");
+  const [isCleared, setIsCleared] = useState(false);
   const [dealer, setDealer] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  const [uniqId, setUniqId] = useState("");
-
   // ----------fetch dealers------------------
 
   const [dealerOptions, setDealerOptions] = useState([]);
@@ -55,8 +55,8 @@ const AddCashPaymentAccordion = ({ setRows }) => {
     };
 
     fetchDealers();
-    const cashId = GenerateUniqueId("cash");
-    setId(cashId);
+    const cheqId = GenerateUniqueId("cheq");
+    setId(cheqId);
   }, []);
 
   const handleChange = (event) => {
@@ -71,33 +71,47 @@ const AddCashPaymentAccordion = ({ setRows }) => {
     setError("");
     setSuccess("");
 
-    if (!id || !amount || !paymentDate || !dealer) {
-      console.log(id, amount, paymentDate, dealer);
-
+    if (
+      !id ||
+      !chequeNumber ||
+      !bankName ||
+      !amount ||
+      !chequeDate ||
+      !paymentDate ||
+      !dealer
+    ) {
       setError("All fields are required");
       return;
     }
 
     try {
-      const newCashPayment = { id, amount, paymentDate, dealer };
-      await cashPaymentService.addCashPayment(newCashPayment);
-      setSuccess("cash payment added successfully");
-      const cashId = GenerateUniqueId("cash");
-      setId(cashId);
+      const newCheqPayment = {
+        id,
+        chequeNumber,
+        bankName,
+        amount,
+        chequeDate,
+        paymentDate,
+        dealer,
+      };
+      await cheqPaymentService.addCheqPayment(newCheqPayment);
+      setSuccess("cheq payment added successfully");
+      const cheqId = GenerateUniqueId("cheq");
+      setId(cheqId);
+      setChequeNumber("");
+      setBankName("");
       setAmount("");
       setPaymentDate("");
-      // setDealer("");
-      // setSelectedDealerOptions("");
-      const data = await cashPaymentService.getAllCashPayments();
+      const data = await cheqPaymentService.getAllCheqPayments();
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
-        cashPaymentId: item.id,
+        cheqPaymentId: item.id,
       }));
 
       setRows(mappedData);
     } catch (err) {
-      setError("Failed to add cash payment");
+      setError("Failed to add cheq payment");
     }
   };
 
@@ -111,7 +125,7 @@ const AddCashPaymentAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Add Cash Payment
+            Add Cheq Payment
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
@@ -134,6 +148,25 @@ const AddCashPaymentAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
+
+                <StyledTextField
+                  color="secondary"
+                  label="Cheque Number"
+                  value={chequeNumber}
+                  onChange={(e) => setChequeNumber(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                />
+
+                <StyledTextField
+                  color="secondary"
+                  label="Bank"
+                  value={bankName}
+                  onChange={(e) => setBankName(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                />
+
                 <StyledTextField
                   color="secondary"
                   label="Amount"
@@ -142,8 +175,34 @@ const AddCashPaymentAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
+              </Grid>
+
+              <Grid
+                xs={6}
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
                 <StyledTextField
-                  label="paymentDate"
+                  label="Cheque Date"
+                  value={chequeDate}
+                  onChange={(e) => setChequeDate(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <StyledTextField
+                  label="payment Date"
                   value={paymentDate}
                   onChange={(e) => setPaymentDate(e.target.value)}
                   margin="normal"
@@ -158,22 +217,6 @@ const AddCashPaymentAccordion = ({ setRows }) => {
                     ),
                   }}
                 />
-              </Grid>
-
-              <Grid
-                xs={6}
-                container
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                {/* <StyledTextField
-                  label="Phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                /> */}
 
                 <FormControl fullWidth size="small">
                   <InputLabel sx={{ color: "white" }}>Dealer</InputLabel>
@@ -227,7 +270,7 @@ const AddCashPaymentAccordion = ({ setRows }) => {
           </AccordionDetails>
           <AccordionActions>
             <Button>Cancel</Button>
-            <Button type="submit">Add Cash Payment</Button>
+            <Button type="submit">Add Cheq Payment</Button>
           </AccordionActions>
         </StyledAccordion>
       </form>
@@ -235,4 +278,4 @@ const AddCashPaymentAccordion = ({ setRows }) => {
   );
 };
 
-export default AddCashPaymentAccordion;
+export default AddCheqPaymentAccordion;
