@@ -196,6 +196,23 @@ const SideBar = ({
           {dealerOpen ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={dealerOpen} timeout="auto" unmountOnExit>
+          {/* ///////////manage Dealer */}
+          <List component="div" disablePadding>
+            <Link style={_Router.link} to="/dealers">
+              <ListItemButton sx={{ pl: 4 }}>
+                <ListItemIcon sx={_SideBar.listItemIcon}>
+                  <GroupIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primaryTypographyProps={_SideBar.listItemTextTypo}
+                  primary="Manage Dealers"
+                />
+              </ListItemButton>
+            </Link>
+          </List>
+
+          <Divider sx={{ borderColor: Theme.palette.myTheme.common.white }} />
+
           {/* ///////////manage cash payment */}
           <List component="div" disablePadding>
             <Link style={_Router.link} to="/cashpayments">

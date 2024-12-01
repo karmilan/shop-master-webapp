@@ -1,10 +1,13 @@
 import { Box, Toolbar } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+import DashboardPage from "../pages/DashboardPage";
 import ManageCashPaymentsPage from "../pages/ManageCashPaymentsPage";
 import ManageCheqPaymentsPage from "../pages/ManageCheqPaymentsPage";
 import ManageCredPaymentsPage from "../pages/ManageCredPaymentsPage";
 import ManageCustomersPage from "../pages/ManageCustomersPage";
+import ManageDealersPage from "../pages/ManageDealersPage";
 import ManageEmployeesPage from "../pages/ManageEmployeesPage";
 import ManageExpensesPage from "../pages/ManageExpensesPage";
 import ManageProfitsPage from "../pages/ManageProfitsPage";
@@ -16,6 +19,8 @@ import SideBar from "./SideBar";
 const drawerWidth = 250;
 
 const Layout = () => {
+  const { user } = useContext(AuthContext);
+
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -26,13 +31,11 @@ const Layout = () => {
     <>
       <Box sx={{ display: "flex" }}>
         <NavBar handleDrawerToggle={handleDrawerToggle} />
-
         <SideBar
           drawerWidth={drawerWidth}
           mobileOpen={mobileOpen}
           handleDrawerToggle={handleDrawerToggle}
         />
-
         <Box
           component="main"
           sx={{
@@ -42,6 +45,10 @@ const Layout = () => {
           }}
         >
           <Toolbar />
+
+          <Routes>
+            <Route path="/" element={<DashboardPage />} />
+          </Routes>
           <Routes>
             <Route path="/shops" element={<ManageShopsPage />} />
           </Routes>
@@ -65,6 +72,9 @@ const Layout = () => {
           </Routes>
           <Routes>
             <Route path="/credpayments" element={<ManageCredPaymentsPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/dealers" element={<ManageDealersPage />} />
           </Routes>
         </Box>
       </Box>

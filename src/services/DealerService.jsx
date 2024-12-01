@@ -1,8 +1,13 @@
 import api from "./Api";
 
 const dealerService = {
-  getAllDealers: async () => {
-    const response = await api.get("/dealers");
+  getAllDealers: async (token) => {
+    const tokenVal = token.replace(/"/g, "");
+    const response = await api.get("/dealers", {
+      headers: { Authorization: `Bearer ${tokenVal}` },
+    });
+    console.log("response>>", response);
+
     return response.data;
   },
 

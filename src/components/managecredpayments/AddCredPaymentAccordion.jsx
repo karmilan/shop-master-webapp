@@ -13,7 +13,8 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
 import credPaymentService from "../../services/CredPaymentService ";
 import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
@@ -22,6 +23,9 @@ import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
 const AddCredPaymentAccordion = ({ setRows }) => {
+  const { token } = useContext(AuthContext);
+  const currentToken = token || localStorage.getItem("token");
+
   const [id, setId] = useState("");
   const [amount, setAmount] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -40,7 +44,7 @@ const AddCredPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers();
+        const data = await dealerService.getAllDealers(currentToken);
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,

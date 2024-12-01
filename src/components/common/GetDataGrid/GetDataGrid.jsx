@@ -46,7 +46,6 @@ const GetDataGrid = ({
   const [rowToDelete, setRowToDelete] = useState(null);
 
   const handleClickOpen = (id) => () => {
-    console.log("id>>>>", id);
     setRowToDelete(id);
     setDeleteAlertOpen(true);
   };

@@ -13,7 +13,8 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
 import cashPaymentService from "../../services/CashPaymentService";
 import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
@@ -22,6 +23,9 @@ import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
 const AddCashPaymentAccordion = ({ setRows }) => {
+  const { user, token } = useContext(AuthContext);
+  const currentToken = token || localStorage.getItem("token");
+
   const [id, setId] = useState("");
   const [amount, setAmount] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
@@ -42,13 +46,12 @@ const AddCashPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers();
+        const data = await dealerService.getAllDealers(currentToken);
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
         }));
         setDealerOptions(dealerMappedData);
-        console.log("mappedData", dealerMappedData);
       } catch (err) {
         console.log("Failed to fetch dealer");
       }
@@ -61,7 +64,6 @@ const AddCashPaymentAccordion = ({ setRows }) => {
 
   const handleChange = (event) => {
     setSelectedDealerOptions(event.target.value);
-    console.log("event.target.value", event.target.value);
     setDealer(event.target.value);
   };
   // -------------------------------------------
@@ -86,8 +88,6 @@ const AddCashPaymentAccordion = ({ setRows }) => {
       setId(cashId);
       setAmount("");
       setPaymentDate("");
-      // setDealer("");
-      // setSelectedDealerOptions("");
       const data = await cashPaymentService.getAllCashPayments();
       const mappedData = data.map((item) => ({
         ...item,

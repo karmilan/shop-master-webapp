@@ -1,7 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 
 const UpdateSnackbar = ({ openAlert, setOpenAlert, alertSeverity }) => {
-  console.log("alertSeverity>>>", alertSeverity);
   return (
     <>
       <Snackbar

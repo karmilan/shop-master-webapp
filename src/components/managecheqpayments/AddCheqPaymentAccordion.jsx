@@ -13,7 +13,8 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
 import cheqPaymentService from "../../services/CheqPaymentService ";
 import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
@@ -22,6 +23,9 @@ import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
 const AddCheqPaymentAccordion = ({ setRows }) => {
+  const { token } = useContext(AuthContext);
+  const currentToken = token || localStorage.getItem("token");
+
   const [id, setId] = useState("");
   const [chequeNumber, setChequeNumber] = useState("");
   const [bankName, setBankName] = useState("");
@@ -42,7 +46,7 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers();
+        const data = await dealerService.getAllDealers(currentToken);
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,

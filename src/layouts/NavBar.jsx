@@ -1,20 +1,13 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Theme from "../styles/Theme.json";
-import { useState } from "react";
+import { AppBar, IconButton, Toolbar, Typography } from "@mui/material";
+import { useContext, useState } from "react";
+import AuthContext from "../context/AuthContext";
 import { _NavBar } from "../styles/NavBarStyles";
+import AccountMenu from "./AccountMenu";
 
 const NavBar = ({ handleDrawerToggle }) => {
+  const { user, currentUser, logout } = useContext(AuthContext);
+
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -41,39 +34,12 @@ const NavBar = ({ handleDrawerToggle }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            SHOP MASTER
+            SHOP MASTER - {import.meta.env.VITE_ENV}
           </Typography>
 
           {/* --------------------------profile and settings---------------------------- */}
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+
+          <AccountMenu />
         </Toolbar>
       </AppBar>
     </>

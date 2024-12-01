@@ -1,13 +1,16 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
-import AddCashPaymentAccordion from "../components/managecashpayments/AddCashPaymentAccordion";
-import cashPaymentService from "../services/CashPaymentService";
+import AddDealerAccordion from "../components/manageDealers/AddDealerAccordion";
+import AuthContext from "../context/AuthContext";
+import dealerService from "../services/DealerService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import { StyledTextField } from "../templates/TextField/StyledTextField";
 
-const ManageCashPaymentsContainer = () => {
+const ManageDealersContainer = () => {
+  const { user, token } = useContext(AuthContext);
+  const currentToken = token || localStorage.getItem("token");
+
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -28,21 +31,23 @@ const ManageCashPaymentsContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.cashPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.dealer.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.amount.toString().includes(filterText) ||
-      row.paymentDate.toLowerCase().includes(filterText.toLowerCase())
+      row.name.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.contactNumber.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.email.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.address.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  // -------------------------------------columns for employee data grid-----------------------------
+  // -------------------------------------columns for customer data grid-----------------------------
   const columns = [
-    { field: "cashPaymentId", headerName: "ID", width: 180, editable: false },
-    { field: "dealer", headerName: "Dealer", width: 180, editable: true },
-    { field: "amount", headerName: "Amount", width: 100, editable: true },
+    { field: "dealerId", headerName: "ID", width: 180, editable: false },
+    { field: "name", headerName: "Name", width: 180, editable: true },
+    { field: "contactNumber", headerName: "Phone", width: 120, editable: true },
+    { field: "email", headerName: "Email", width: 180, editable: true },
+    { field: "address", headerName: "Address", width: 220, editable: true },
     {
-      field: "paymentDate",
-      headerName: "Payment Date",
-      width: 120,
+      field: "creditLimit",
+      headerName: "Credit Limit",
+      width: 100,
       editable: true,
     },
     {
@@ -53,34 +58,35 @@ const ManageCashPaymentsContainer = () => {
   ];
 
   useEffect(() => {
-    // --------------------------------------get all cash payments function---------------------------------
-    const fetchCashPayments = async () => {
+    console.log("effect");
+
+    console.log("userToken", user);
+    console.log("localStUser", localStorage.getItem("user"));
+    // --------------------------------------get all shops function---------------------------------
+    const fetchDealers = async () => {
       try {
-        const data = await cashPaymentService.getAllCashPayments();
+        const data = await dealerService.getAllDealers(currentToken);
         const mappedData = data.map((item) => ({
           ...item,
           id: item._id,
-          cashPaymentId: item.id,
-          paymentDate: GetYearMonthDate(item.paymentDate),
-          dealer: item.dealer?.name || "N/A",
         }));
 
         setRows(mappedData);
       } catch (err) {
-        setError("Failed to fetch cash payments");
+        setError("Failed to fetch customers");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCashPayments();
+    fetchDealers();
   }, []);
 
-  // ------------------------------------update cash payment details function --------------------------------------
+  // ------------------------------------update shop details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
     try {
-      await cashPaymentService.updateCashPayment(newRow.id, newRow);
+      await dealerService.updateDealer(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -96,10 +102,10 @@ const ManageCashPaymentsContainer = () => {
     }
   };
 
-  // ----------------------------------------delete cash payment----------------------------------------------------
+  // ----------------------------------------delete Dealer----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await cashPaymentService.deleteCashPayment(id);
+      await dealerService.deleteDealer(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -111,7 +117,7 @@ const ManageCashPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCashPaymentAccordion setRows={setRows} />
+        <AddDealerAccordion setRows={setRows} />
         <br />
 
         <StyledTextField
@@ -146,4 +152,4 @@ const ManageCashPaymentsContainer = () => {
   );
 };
 
-export default ManageCashPaymentsContainer;
+export default ManageDealersContainer;
