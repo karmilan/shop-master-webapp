@@ -5,7 +5,7 @@ const PageHeader = ({ header, subHeader }) => {
   return (
     <>
       <Grid>
-        <Typography color={Theme.palette.myTheme.common.white} variant="h2">
+        <Typography color={Theme.palette.myTheme.common.white} variant="h4">
           {header}
         </Typography>
         <Typography

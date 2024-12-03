@@ -21,7 +21,7 @@ export const _SideBar = {
   },
 
   listItemTextTypo: {
-    fontSize: '14px'
+    fontSize: '12px'
   }
 };
 
