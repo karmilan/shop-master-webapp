@@ -71,6 +71,7 @@ const ManageCredPaymentsContainer = () => {
           credPaymentId: item.id,
           paymentDate: GetYearMonthDate(item.paymentDate),
           dueDate: GetYearMonthDate(item.dueDate),
+          dealer: item?.dealer?.name,
         }));
 
         setRows(mappedData);

@@ -58,11 +58,7 @@ const ManageDealersContainer = () => {
   ];
 
   useEffect(() => {
-    console.log("effect");
-
-    console.log("userToken", user);
-    console.log("localStUser", localStorage.getItem("user"));
-    // --------------------------------------get all shops function---------------------------------
+    // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
         const data = await dealerService.getAllDealers(currentToken);

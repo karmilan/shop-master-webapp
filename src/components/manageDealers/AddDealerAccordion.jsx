@@ -7,7 +7,8 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../../context/AuthContext";
 import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
@@ -15,6 +16,9 @@ import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
 const AddDealerAccordion = ({ setRows }) => {
+  const { user, token } = useContext(AuthContext);
+  const currentToken = token || localStorage.getItem("token");
+
   const [dealerId, setdealerId] = useState("");
   const [name, setName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
@@ -58,7 +62,7 @@ const AddDealerAccordion = ({ setRows }) => {
       setContactNumber("");
       setEmail("");
       setCreditLimit("");
-      const data = await dealerService.getAllDealers();
+      const data = await dealerService.getAllDealers(currentToken);
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,

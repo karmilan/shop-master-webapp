@@ -62,7 +62,7 @@ const ManageCashPaymentsContainer = () => {
           id: item._id,
           cashPaymentId: item.id,
           paymentDate: GetYearMonthDate(item.paymentDate),
-          dealer: item.dealer?.name || "N/A",
+          dealer: item?.dealer?.name,
         }));
 
         setRows(mappedData);

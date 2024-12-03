@@ -80,6 +80,7 @@ const ManageCheqPaymentsContainer = () => {
           cheqPaymentId: item.id,
           paymentDate: GetYearMonthDate(item.paymentDate),
           chequeDate: GetYearMonthDate(item.chequeDate),
+          dealer: item?.dealer?.name,
         }));
 
         setRows(mappedData);

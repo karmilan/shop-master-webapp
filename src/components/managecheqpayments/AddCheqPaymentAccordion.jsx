@@ -21,6 +21,7 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
+import GetYearMonthDate from "../common/GetYearMonthDate/GetYearMonthDate";
 
 const AddCheqPaymentAccordion = ({ setRows }) => {
   const { token } = useContext(AuthContext);
@@ -111,6 +112,9 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
         ...item,
         id: item._id,
         cheqPaymentId: item.id,
+        paymentDate: GetYearMonthDate(item.paymentDate),
+        chequeDate: GetYearMonthDate(item.chequeDate),
+        dealer: item?.dealer?.name,
       }));
 
       setRows(mappedData);
