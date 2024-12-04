@@ -69,7 +69,8 @@ const AddCustomerAccordion = ({ setRows }) => {
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -90,15 +91,7 @@ const AddCustomerAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
-              </Grid>
 
-              <Grid
-                xs={6}
-                container
-                direction="column"
-                justifyContent="center"
-                alignItems="center"
-              >
                 <StyledTextField
                   label="Phone"
                   value={phone}
@@ -106,6 +99,16 @@ const AddCustomerAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
+              </Grid>
+
+              <Grid
+                xs={12}
+                md={6}
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
                 <StyledTextField
                   label="Address"
                   value={address}

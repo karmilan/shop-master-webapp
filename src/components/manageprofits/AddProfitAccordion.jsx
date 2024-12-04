@@ -101,18 +101,19 @@ const AddProfitAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Accordion Actions
+            Add Profit
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
               >
-                <FormControl fullWidth>
+                <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Shop</InputLabel>
                   <StyledSelect
                     value={selectedShopOptions}
@@ -149,7 +150,8 @@ const AddProfitAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -159,7 +161,6 @@ const AddProfitAccordion = ({ setRows }) => {
                   label="Date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  margin="normal"
                   variant="outlined"
                 />
 

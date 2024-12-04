@@ -89,7 +89,8 @@ const AddDealerAccordion = ({ setRows }) => {
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -126,7 +127,8 @@ const AddDealerAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"

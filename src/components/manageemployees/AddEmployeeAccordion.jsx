@@ -101,12 +101,13 @@ const AddEmployeeAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Accordion Actions
+            Add New Employee
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -138,7 +139,8 @@ const AddEmployeeAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="flex-start"
@@ -152,7 +154,7 @@ const AddEmployeeAccordion = ({ setRows }) => {
                   variant="outlined"
                 />
 
-                <FormControl fullWidth>
+                <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Shop</InputLabel>
                   <Select
                     value={selectedShopOptions}

@@ -119,7 +119,8 @@ const AddCashPaymentAccordion = ({ setRows }) => {
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -145,40 +146,17 @@ const AddCashPaymentAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
-                <StyledTextField
-                  label="paymentDate"
-                  value={paymentDate}
-                  onChange={(e) => setPaymentDate(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth style={{ color: "white" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
-                justifyContent="flex-start"
+                justifyContent="center"
                 alignItems="center"
               >
-                {/* <StyledTextField
-                  label="Phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                /> */}
-
-                <FormControl fullWidth size="small">
+                <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Dealer</InputLabel>
                   <Select
                     value={selectedDealerOptions}
@@ -222,6 +200,23 @@ const AddCashPaymentAccordion = ({ setRows }) => {
                     ))}
                   </Select>
                 </FormControl>
+
+                <StyledTextField
+                  label="paymentDate"
+                  value={paymentDate}
+                  onChange={(e) => setPaymentDate(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </Grid>
             </Grid>
 

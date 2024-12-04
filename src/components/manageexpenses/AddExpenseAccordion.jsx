@@ -102,18 +102,19 @@ const AddExpenseAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Accordion Actions
+            Add Expense
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
                 alignItems="center"
               >
-                <FormControl fullWidth>
+                <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Shop</InputLabel>
                   <StyledSelect
                     value={selectedShopOptions}
@@ -158,17 +159,17 @@ const AddExpenseAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
-                justifyContent="center"
+                justifyContent="flex-start"
                 alignItems="center"
               >
                 <StyledTextField
                   label="Date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
-                  margin="normal"
                   variant="outlined"
                 />
 

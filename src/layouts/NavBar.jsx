@@ -23,7 +23,9 @@ const NavBar = ({ handleDrawerToggle }) => {
   return (
     <>
       <AppBar position="fixed" elevation="6" sx={_NavBar.appBar}>
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar
+          sx={{ justifyContent: { xs: "space-evenly", md: "space-between" } }}
+        >
           <IconButton
             color="inherit"
             aria-label="open drawer"

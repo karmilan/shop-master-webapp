@@ -124,7 +124,8 @@ const AddCredPaymentAccordion = ({ setRows }) => {
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -151,50 +152,8 @@ const AddCredPaymentAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
-              </Grid>
 
-              <Grid
-                xs={6}
-                container
-                direction="column"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <StyledTextField
-                  label="Due Date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth style={{ color: "white" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <StyledTextField
-                  label="payment Date"
-                  value={paymentDate}
-                  onChange={(e) => setPaymentDate(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                  type="date"
-                  InputLabelProps={{
-                    shrink: true,
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <CalendarMonth style={{ color: "white" }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <FormControl fullWidth size="small">
+                <FormControl sx={{ width: "90%", mt: 2 }} size="small">
                   <InputLabel sx={{ color: "white" }}>Dealer</InputLabel>
                   <Select
                     value={selectedDealerOptions}
@@ -238,6 +197,49 @@ const AddCredPaymentAccordion = ({ setRows }) => {
                     ))}
                   </Select>
                 </FormControl>
+              </Grid>
+
+              <Grid
+                xs={12}
+                md={6}
+                container
+                direction="column"
+                justifyContent="flex-start"
+                alignItems="center"
+              >
+                <StyledTextField
+                  label="Due Date"
+                  value={dueDate}
+                  onChange={(e) => setDueDate(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <StyledTextField
+                  label="payment Date"
+                  value={paymentDate}
+                  onChange={(e) => setPaymentDate(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
               </Grid>
             </Grid>
 

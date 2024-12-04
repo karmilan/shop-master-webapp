@@ -62,12 +62,13 @@ const AddShopAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Accordion Actions
+            Add New Shop
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -91,7 +92,8 @@ const AddShopAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"

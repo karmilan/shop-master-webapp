@@ -138,7 +138,8 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
           <AccordionDetails>
             <Grid container>
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="center"
@@ -186,7 +187,8 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
               </Grid>
 
               <Grid
-                xs={6}
+                xs={12}
+                md={6}
                 container
                 direction="column"
                 justifyContent="flex-start"
@@ -226,7 +228,7 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
                   }}
                 />
 
-                <FormControl fullWidth size="small">
+                <FormControl sx={{ width: "90%", mt: 2 }} size="small">
                   <InputLabel sx={{ color: "white" }}>Dealer</InputLabel>
                   <Select
                     value={selectedDealerOptions}
