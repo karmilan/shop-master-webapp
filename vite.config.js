@@ -18,7 +18,7 @@ export default defineConfig({
     },
     manifest: {
       "short_name": "SMA",
-      "name": "Shop Master App",
+      "name": "Shop Master",
       "icons": [
         {
           "src": "pwa-64x64.png",
