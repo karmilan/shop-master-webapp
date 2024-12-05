@@ -64,7 +64,7 @@ const AddCustomerAccordion = ({ setRows }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Accordion Actions
+            Add New Customer
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
