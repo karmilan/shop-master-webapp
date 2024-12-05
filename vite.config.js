@@ -13,7 +13,8 @@ export default defineConfig({
     filename: 'sw.ts',
     // registerType:'autoUpdate',
     injectManifest: {
-      swDest: 'dist/sw.js'
+      swDest: 'dist/sw.js',
+      swSrc: 'src/sw.ts',
     },
     manifest: {
       "short_name": "MDN",
