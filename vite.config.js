@@ -17,8 +17,8 @@ export default defineConfig({
       swSrc: 'src/sw.js',
     },
     manifest: {
-      "short_name": "MDN",
-      "name": "MDN Web Docs",
+      "short_name": "SMA",
+      "name": "Shop Master App",
       "icons": [
         {
           "src": "pwa-64x64.png",
