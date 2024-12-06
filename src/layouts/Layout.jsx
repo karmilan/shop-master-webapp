@@ -10,6 +10,7 @@ import ManageCustomersPage from "../pages/ManageCustomersPage";
 import ManageDealersPage from "../pages/ManageDealersPage";
 import ManageEmployeesPage from "../pages/ManageEmployeesPage";
 import ManageExpensesPage from "../pages/ManageExpensesPage";
+import ManageLoansPage from "../pages/ManageLoansPage";
 import ManageProfitsPage from "../pages/ManageProfitsPage";
 import ManageShopsPage from "../pages/ManageShopsPage";
 import NavBar from "./NavBar";
@@ -62,9 +63,6 @@ const Layout = () => {
             <Route path="/expenses" element={<ManageExpensesPage />} />
           </Routes>
           <Routes>
-            <Route path="/customers" element={<ManageCustomersPage />} />
-          </Routes>
-          <Routes>
             <Route path="/cashpayments" element={<ManageCashPaymentsPage />} />
           </Routes>
           <Routes>
@@ -75,6 +73,12 @@ const Layout = () => {
           </Routes>
           <Routes>
             <Route path="/dealers" element={<ManageDealersPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/customers" element={<ManageCustomersPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/loans" element={<ManageLoansPage />} />
           </Routes>
         </Box>
       </Box>

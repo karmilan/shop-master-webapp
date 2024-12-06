@@ -5,7 +5,7 @@ import Layout from "./layouts/Layout";
 import LoginPage from "./pages/LoginPage";
 
 const App = () => {
-  const { user, token } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const currentToken = token || localStorage.getItem("token");
 
   return (

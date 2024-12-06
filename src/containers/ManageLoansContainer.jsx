@@ -1,12 +1,13 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import AddCustomerAccordion from "../components/managecustomers/AddCustomerAccordion";
-import customerService from "../services/CustomerService";
+import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
+import AddLoanAccordion from "../components/manageLoans/AddLoanAccordion";
+import loanService from "../services/LoanService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import { StyledTextField } from "../templates/TextField/StyledTextField";
 
-const ManageCustomersContainer = () => {
+const ManageLoansContainer = () => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -27,26 +28,17 @@ const ManageCustomersContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.customerId.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.phone.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.address.toLowerCase().includes(filterText.toLowerCase())
+      row.id.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.amount.toString().includes(filterText) ||
+      row.customer.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  // -------------------------------------columns for customer data grid-----------------------------
+  // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
-    { field: "customerId", headerName: "ID", width: 180, editable: false },
-    { field: "name", headerName: "Name", width: 180, editable: true },
-    { field: "email", headerName: "Email", width: 180, editable: true },
-    { field: "phone", headerName: "Phone", width: 120, editable: true },
-    { field: "address", headerName: "Address", width: 220, editable: true },
-    {
-      field: "creditLimit",
-      headerName: "Credit Limit",
-      width: 100,
-      editable: true,
-    },
+    { field: "id", headerName: "ID", width: 180, editable: false },
+    { field: "customer", headerName: "Customer", width: 180, editable: true },
+    { field: "amount", headerName: "Amount", width: 100, editable: true },
+
     {
       field: "createdAt",
       headerName: "Create Data",
@@ -55,31 +47,33 @@ const ManageCustomersContainer = () => {
   ];
 
   useEffect(() => {
-    // --------------------------------------get all shops function---------------------------------
-    const fetchCustomers = async () => {
+    // --------------------------------------get all Loans function---------------------------------
+    const fetchLoans = async () => {
       try {
-        const data = await customerService.getAllCustomers();
+        const data = await loanService.getAllLoans();
         const mappedData = data.map((item) => ({
           ...item,
           id: item._id,
+          customer: item?.customer?.name,
+          createdAt: GetYearMonthDate(item.createdAt),
         }));
 
         setRows(mappedData);
       } catch (err) {
-        setError("Failed to fetch customers");
+        setError("Failed to fetch loans");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCustomers();
+    fetchLoans();
   }, []);
 
-  // ------------------------------------update shop details function --------------------------------------
+  // ------------------------------------update loan details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
     try {
-      await customerService.updateCustomer(newRow.id, newRow);
+      await loanService.updateLoans(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -95,10 +89,10 @@ const ManageCustomersContainer = () => {
     }
   };
 
-  // ----------------------------------------delete shop----------------------------------------------------
+  // ----------------------------------------delete loan details----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await customerService.deleteCustomer(id);
+      await loanService.deleteLoans(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -110,7 +104,7 @@ const ManageCustomersContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCustomerAccordion setRows={setRows} />
+        <AddLoanAccordion setRows={setRows} />
         <br />
 
         <StyledTextField
@@ -145,4 +139,4 @@ const ManageCustomersContainer = () => {
   );
 };
 
-export default ManageCustomersContainer;
+export default ManageLoansContainer;

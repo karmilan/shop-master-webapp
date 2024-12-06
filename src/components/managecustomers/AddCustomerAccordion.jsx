@@ -7,13 +7,17 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import customerService from "../../services/CustomerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
 const AddCustomerAccordion = ({ setRows }) => {
+  const [customerId, setCustomerId] = useState("");
+  const [uniqId, setUniqId] = useState("");
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -23,20 +27,34 @@ const AddCustomerAccordion = ({ setRows }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  useEffect(() => {
+    const cashId = GenerateUniqueId("cust");
+    setCustomerId(cashId);
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
 
-    if (!name || !address || !phone || !email) {
+    if (!customerId || !name || !address || !phone || !email) {
       setError("All fields are required");
       return;
     }
 
     try {
-      const newCustomer = { name, address, phone, email, creditLimit };
+      const newCustomer = {
+        customerId,
+        name,
+        address,
+        phone,
+        email,
+        creditLimit,
+      };
       await customerService.addCustomer(newCustomer);
       setSuccess("Customer added successfully");
+      const cashId = GenerateUniqueId("cust");
+      setCustomerId(cashId);
       setName("");
       setAddress("");
       setPhone("");
@@ -78,6 +96,19 @@ const AddCustomerAccordion = ({ setRows }) => {
               >
                 <StyledTextField
                   color="secondary"
+                  label="Id"
+                  value={customerId}
+                  slotProps={{
+                    input: {
+                      readOnly: true,
+                    },
+                  }}
+                  margin="normal"
+                  variant="outlined"
+                />
+
+                <StyledTextField
+                  color="secondary"
                   label="Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -91,14 +122,6 @@ const AddCustomerAccordion = ({ setRows }) => {
                   margin="normal"
                   variant="outlined"
                 />
-
-                <StyledTextField
-                  label="Phone"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  margin="normal"
-                  variant="outlined"
-                />
               </Grid>
 
               <Grid
@@ -109,6 +132,14 @@ const AddCustomerAccordion = ({ setRows }) => {
                 justifyContent="flex-start"
                 alignItems="center"
               >
+                <StyledTextField
+                  label="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                />
+
                 <StyledTextField
                   label="Address"
                   value={address}
@@ -132,7 +163,7 @@ const AddCustomerAccordion = ({ setRows }) => {
           </AccordionDetails>
           <AccordionActions>
             <Button>Cancel</Button>
-            <Button type="submit">Add Shop</Button>
+            <Button type="submit">Add Customer</Button>
           </AccordionActions>
         </StyledAccordion>
       </form>

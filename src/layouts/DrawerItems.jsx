@@ -118,8 +118,9 @@ const DrawerItems = () => {
         {/* ///////////manage credit */}
         <MenuItems
           isSubmenu={true}
-          menuItemText="Manage Credits"
+          menuItemText="Manage Loans"
           menuItemIcon={<AddCardIcon fontSize="small" />}
+          linkTo="/loans"
         />
       </CollapseMenuItems>
     </>
