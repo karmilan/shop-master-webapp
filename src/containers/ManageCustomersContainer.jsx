@@ -54,24 +54,25 @@ const ManageCustomersContainer = () => {
     },
   ];
 
+  // --------------------------------------get all shops function---------------------------------
+  const fetchCustomers = async () => {
+    try {
+      // const data = await customerService.getAllCustomers();
+      const data = await customerService.getCustomersByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch customers");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all shops function---------------------------------
-    const fetchCustomers = async () => {
-      try {
-        const data = await customerService.getAllCustomers();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch customers");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCustomers();
   }, []);
 
@@ -110,7 +111,10 @@ const ManageCustomersContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCustomerAccordion setRows={setRows} />
+        <AddCustomerAccordion
+          setRows={setRows}
+          fetchCustomers={fetchCustomers}
+        />
         <br />
 
         <StyledTextField

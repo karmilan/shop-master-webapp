@@ -60,28 +60,29 @@ const ManageCredPaymentsContainer = () => {
     },
   ];
 
+  // --------------------------------------get all credit payments function---------------------------------
+  const fetchCredPayments = async () => {
+    try {
+      // const data = await credPaymentService.getAllCredPayments();
+      const data = await credPaymentService.getCredPaymentsByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        credPaymentId: item.id,
+        paymentDate: GetYearMonthDate(item.paymentDate),
+        dueDate: GetYearMonthDate(item.dueDate),
+        dealer: item?.dealer?.name,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch cred payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all credit payments function---------------------------------
-    const fetchCredPayments = async () => {
-      try {
-        const data = await credPaymentService.getAllCredPayments();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          credPaymentId: item.id,
-          paymentDate: GetYearMonthDate(item.paymentDate),
-          dueDate: GetYearMonthDate(item.dueDate),
-          dealer: item?.dealer?.name,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch cred payments");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCredPayments();
   }, []);
 
@@ -120,7 +121,10 @@ const ManageCredPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCredPaymentAccordion setRows={setRows} />
+        <AddCredPaymentAccordion
+          setRows={setRows}
+          fetchCredPayments={fetchCredPayments}
+        />
         <br />
 
         <StyledTextField

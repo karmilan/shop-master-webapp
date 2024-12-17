@@ -16,6 +16,15 @@ const cashPaymentService = {
     return response.data;
   },
 
+  getCashPaymentsByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/cashpaymentsbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    console.log("ress>", response);
+    return response.data.filteredCashPayment;
+  },
+
   updateCashPayment: async (id, cashpaymentData) => {
     const response = await api.put(`/updatecashpayment/${id}`, cashpaymentData);
     return response.data;

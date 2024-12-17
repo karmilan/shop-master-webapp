@@ -4,22 +4,16 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import profitService from "../../services/ProfitService";
-import shopService from "../../services/ShopService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
-import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
-import GetYearMonth from "../common/GetYearMonth/GetYearMonth";
 
-const AddProfitAccordion = ({ setRows }) => {
+const AddProfitAccordion = ({ setRows, fetchProfits }) => {
   const [shop, setShop] = useState("");
 
   const [amount, setAmount] = useState("");
@@ -34,29 +28,29 @@ const AddProfitAccordion = ({ setRows }) => {
   const [shopOptions, setShopOptions] = useState([]);
   const [selectedShopOptions, setSelectedShopOptions] = useState();
 
-  useEffect(() => {
-    // --------------------------------------get all shops function---------------------------------
-    const fetchShops = async () => {
-      try {
-        const data = await shopService.getAllShops();
-        const shopMappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-        }));
-        setShopOptions(shopMappedData);
-      } catch (err) {
-        console.log("Failed to fetch shops");
-      }
-    };
+  // useEffect(() => {
+  //   // --------------------------------------get all shops function---------------------------------
+  //   const fetchShops = async () => {
+  //     try {
+  //       const data = await shopService.getAllShops();
+  //       const shopMappedData = data.map((item) => ({
+  //         ...item,
+  //         id: item._id,
+  //       }));
+  //       setShopOptions(shopMappedData);
+  //     } catch (err) {
+  //       console.log("Failed to fetch shops");
+  //     }
+  //   };
 
-    fetchShops();
-  }, []);
+  //   fetchShops();
+  // }, []);
 
-  const handleChange = (event) => {
-    setSelectedShopOptions(event.target.value);
-    console.log("event.target.value", event.target.value);
-    setShop(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setSelectedShopOptions(event.target.value);
+  //   console.log("event.target.value", event.target.value);
+  //   setShop(event.target.value);
+  // };
   // -------------------------------------------
 
   const handleSubmit = async (e) => {
@@ -64,7 +58,7 @@ const AddProfitAccordion = ({ setRows }) => {
     setError("");
     setSuccess("");
 
-    if (!shop || !amount || !date || !description) {
+    if (!amount || !date || !description) {
       setError("All fields are required");
       return;
     }
@@ -77,15 +71,18 @@ const AddProfitAccordion = ({ setRows }) => {
       setAmount("");
       setDate("");
       setDescription("");
-      const data = await profitService.getAllProfits();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-        shop: item.shop ? item.shop.name : "null",
-        date: GetYearMonth(item.date),
-      }));
+      // const data = await profitService.getAllProfits();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   shop: item.shop ? item.shop.name : "null",
+      //   date: GetYearMonth(item.date),
+      // }));
 
-      setRows(mappedData);
+      // ------------fetch data once added----------------------
+
+      fetchProfits();
+      // setRows(mappedData);
     } catch (err) {
       setError("Failed to add shop");
     }
@@ -113,7 +110,7 @@ const AddProfitAccordion = ({ setRows }) => {
                 justifyContent="center"
                 alignItems="center"
               >
-                <FormControl sx={{ width: "90%" }} size="small">
+                {/* <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Shop</InputLabel>
                   <StyledSelect
                     value={selectedShopOptions}
@@ -138,13 +135,20 @@ const AddProfitAccordion = ({ setRows }) => {
                       </MenuItem>
                     ))}
                   </StyledSelect>
-                </FormControl>
+                </FormControl> */}
 
                 <StyledTextField
                   label="Amount"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   margin="normal"
+                  variant="outlined"
+                />
+
+                <StyledTextField
+                  label="Date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
                   variant="outlined"
                 />
               </Grid>
@@ -154,16 +158,9 @@ const AddProfitAccordion = ({ setRows }) => {
                 md={6}
                 container
                 direction="column"
-                justifyContent="center"
+                justifyContent="start"
                 alignItems="center"
               >
-                <StyledTextField
-                  label="Date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  variant="outlined"
-                />
-
                 <StyledTextField
                   label="Description"
                   value={description}

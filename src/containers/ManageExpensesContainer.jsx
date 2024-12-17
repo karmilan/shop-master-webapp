@@ -54,27 +54,28 @@ const ManageExpensesContainer = () => {
     },
   ];
 
+  // --------------------------------------get all profits function---------------------------------
+
+  const fetchExpenses = async () => {
+    try {
+      // const data = await expenseService.getAllExpenses();
+      const data = await expenseService.getExpensesByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        shop: item.shop ? item.shop.name : "null",
+        date: GetYearMonth(item.date),
+      }));
+      console.log(mappedData);
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch shops");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all profits function---------------------------------
-
-    const fetchExpenses = async () => {
-      try {
-        const data = await expenseService.getAllExpenses();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          shop: item.shop ? item.shop.name : "null",
-          date: GetYearMonth(item.date),
-        }));
-        console.log(mappedData);
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch shops");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchExpenses();
   }, []);
 
@@ -113,7 +114,7 @@ const ManageExpensesContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddExpenseAccordion setRows={setRows} />
+        <AddExpenseAccordion setRows={setRows} fetchExpenses={fetchExpenses} />
         <br />
 
         <StyledTextField

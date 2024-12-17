@@ -46,26 +46,27 @@ const ManageLoansContainer = () => {
     },
   ];
 
+  // --------------------------------------get all Loans function---------------------------------
+  const fetchLoans = async () => {
+    try {
+      // const data = await loanService.getAllLoans();
+      const data = await loanService.getLoansByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        customer: item?.customer?.name,
+        createdAt: GetYearMonthDate(item.createdAt),
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch loans");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all Loans function---------------------------------
-    const fetchLoans = async () => {
-      try {
-        const data = await loanService.getAllLoans();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          customer: item?.customer?.name,
-          createdAt: GetYearMonthDate(item.createdAt),
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch loans");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchLoans();
   }, []);
 
@@ -104,7 +105,7 @@ const ManageLoansContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddLoanAccordion setRows={setRows} />
+        <AddLoanAccordion setRows={setRows} fetchLoans={fetchLoans} />
         <br />
 
         <StyledTextField

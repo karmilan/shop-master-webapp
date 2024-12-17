@@ -21,9 +21,8 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
-import GetYearMonthDate from "../common/GetYearMonthDate/GetYearMonthDate";
 
-const AddCheqPaymentAccordion = ({ setRows }) => {
+const AddCheqPaymentAccordion = ({ setRows, fetchCheqPayments }) => {
   const { token } = useContext(AuthContext);
   const currentToken = token || localStorage.getItem("token");
 
@@ -47,7 +46,9 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers(currentToken);
+        // const data = await dealerService.getAllDealers(currentToken);
+        const data = await dealerService.getDealerByShop();
+
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
@@ -107,17 +108,18 @@ const AddCheqPaymentAccordion = ({ setRows }) => {
       setBankName("");
       setAmount("");
       setPaymentDate("");
-      const data = await cheqPaymentService.getAllCheqPayments();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-        cheqPaymentId: item.id,
-        paymentDate: GetYearMonthDate(item.paymentDate),
-        chequeDate: GetYearMonthDate(item.chequeDate),
-        dealer: item?.dealer?.name,
-      }));
+      // const data = await cheqPaymentService.getAllCheqPayments();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   cheqPaymentId: item.id,
+      //   paymentDate: GetYearMonthDate(item.paymentDate),
+      //   chequeDate: GetYearMonthDate(item.chequeDate),
+      //   dealer: item?.dealer?.name,
+      // }));
 
-      setRows(mappedData);
+      // setRows(mappedData);
+      fetchCheqPayments();
     } catch (err) {
       setError("Failed to add cheq payment");
     }

@@ -52,27 +52,28 @@ const ManageCashPaymentsContainer = () => {
     },
   ];
 
+  // --------------------------------------get all cash payments function---------------------------------
+  const fetchCashPayments = async () => {
+    try {
+      // const data = await cashPaymentService.getAllCashPayments();
+      const data = await cashPaymentService.getCashPaymentsByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        cashPaymentId: item.id,
+        paymentDate: GetYearMonthDate(item.paymentDate),
+        dealer: item?.dealer?.name,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch cash payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all cash payments function---------------------------------
-    const fetchCashPayments = async () => {
-      try {
-        const data = await cashPaymentService.getAllCashPayments();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          cashPaymentId: item.id,
-          paymentDate: GetYearMonthDate(item.paymentDate),
-          dealer: item?.dealer?.name,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch cash payments");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCashPayments();
   }, []);
 
@@ -111,7 +112,10 @@ const ManageCashPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCashPaymentAccordion setRows={setRows} />
+        <AddCashPaymentAccordion
+          setRows={setRows}
+          fetchCashPayments={fetchCashPayments}
+        />
         <br />
 
         <StyledTextField

@@ -69,28 +69,29 @@ const ManageCheqPaymentsContainer = () => {
     },
   ];
 
+  // --------------------------------------get all cheque payments function---------------------------------
+  const fetchCheqPayments = async () => {
+    try {
+      // const data = await cheqPaymentService.getAllCheqPayments();
+      const data = await cheqPaymentService.getCheqPaymentsByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        cheqPaymentId: item.id,
+        paymentDate: GetYearMonthDate(item.paymentDate),
+        chequeDate: GetYearMonthDate(item.chequeDate),
+        dealer: item?.dealer?.name,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch cheq payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all cheque payments function---------------------------------
-    const fetchCheqPayments = async () => {
-      try {
-        const data = await cheqPaymentService.getAllCheqPayments();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          cheqPaymentId: item.id,
-          paymentDate: GetYearMonthDate(item.paymentDate),
-          chequeDate: GetYearMonthDate(item.chequeDate),
-          dealer: item?.dealer?.name,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch cheq payments");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchCheqPayments();
   }, []);
 
@@ -129,7 +130,10 @@ const ManageCheqPaymentsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddCheqPaymentAccordion setRows={setRows} />
+        <AddCheqPaymentAccordion
+          setRows={setRows}
+          fetchCheqPayments={fetchCheqPayments}
+        />
         <br />
 
         <StyledTextField

@@ -12,8 +12,23 @@ const customerService = {
   },
 
   addCustomer: async (customerData) => {
-    const response = await api.post("/addcustomer", customerData);
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    // Assign selected shop
+    const customerWithShop = {
+      ...customerData,
+      shop: currentShopId.replace(/"/g, ""),
+    };
+    const response = await api.post("/addcustomer", customerWithShop);
     return response.data;
+  },
+
+  getCustomersByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/customersbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    return response.data.customer;
   },
 
   updateCustomer: async (id, customerData) => {

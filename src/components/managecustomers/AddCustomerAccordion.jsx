@@ -14,7 +14,7 @@ import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
-const AddCustomerAccordion = ({ setRows }) => {
+const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
   const [customerId, setCustomerId] = useState("");
   const [uniqId, setUniqId] = useState("");
 
@@ -60,13 +60,16 @@ const AddCustomerAccordion = ({ setRows }) => {
       setPhone("");
       setEmail("");
       setCreditLimit("");
-      const data = await customerService.getAllCustomers();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-      }));
 
-      setRows(mappedData);
+      // ------------fetch data once added----------------------
+      fetchCustomers();
+      // const data = await customerService.getAllCustomers();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      // }));
+
+      // setRows(mappedData);
     } catch (err) {
       setError("Failed to add customer");
     }

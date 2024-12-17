@@ -12,8 +12,23 @@ const profitService = {
   },
 
   addProfit: async (profitData) => {
-    const response = await api.post("/addprofit", profitData);
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    // Assign selected shop
+    const profitWithShop = {
+      ...profitData,
+      shop: currentShopId.replace(/"/g, ""),
+    };
+    const response = await api.post("/addprofit", profitWithShop);
     return response.data;
+  },
+
+  getProfitsByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/profitsbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    return response.data.profit;
   },
 
   updateProfit: async (id, profitData) => {

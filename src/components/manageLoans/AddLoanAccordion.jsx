@@ -18,7 +18,7 @@ import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 
-const AddLoanAccordion = ({ setRows }) => {
+const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [customer, setCustomer] = useState("");
 
   const [amount, setAmount] = useState();
@@ -35,7 +35,8 @@ const AddLoanAccordion = ({ setRows }) => {
     // --------------------------------------get all customers function---------------------------------
     const fetchCustomers = async () => {
       try {
-        const data = await customerService.getAllCustomers();
+        // const data = await customerService.getAllCustomers();
+        const data = await customerService.getCustomersByShop();
         const customerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
@@ -72,14 +73,15 @@ const AddLoanAccordion = ({ setRows }) => {
       setSuccess("Loan added successfully");
       setCustomer("");
       setAmount();
-      const data = await loanService.getAllLoans();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-        customer: item.customer ? item.customer.name : "null",
-      }));
+      // const data = await loanService.getAllLoans();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   customer: item.customer ? item.customer.name : "null",
+      // }));
 
-      setRows(mappedData);
+      // setRows(mappedData);
+      fetchLoans();
     } catch (err) {
       setError("Failed to add customer");
     }

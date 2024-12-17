@@ -15,7 +15,7 @@ import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 
-const AddDealerAccordion = ({ setRows }) => {
+const AddDealerAccordion = ({ setRows, fetchDealers }) => {
   const { user, token } = useContext(AuthContext);
   const currentToken = token || localStorage.getItem("token");
 
@@ -62,13 +62,14 @@ const AddDealerAccordion = ({ setRows }) => {
       setContactNumber("");
       setEmail("");
       setCreditLimit("");
-      const data = await dealerService.getAllDealers(currentToken);
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-      }));
+      // const data = await dealerService.getAllDealers(currentToken);
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      // }));
 
-      setRows(mappedData);
+      // setRows(mappedData);
+      fetchDealers();
     } catch (err) {
       setError("Failed to add dealer");
     }

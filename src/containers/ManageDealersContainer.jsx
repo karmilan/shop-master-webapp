@@ -1,5 +1,6 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import AddDealerAccordion from "../components/manageDealers/AddDealerAccordion";
 import AuthContext from "../context/AuthContext";
@@ -39,7 +40,26 @@ const ManageDealersContainer = () => {
 
   // -------------------------------------columns for customer data grid-----------------------------
   const columns = [
-    { field: "dealerId", headerName: "ID", width: 180, editable: false },
+    {
+      field: "dealerId",
+      headerName: "ID",
+      width: 180,
+      editable: false,
+      renderCell: (params) => (
+        <Link
+          to="/allpayments"
+          state={{ dealerName: params.row.name }}
+          style={{
+            color: "#1976d2",
+            textDecoration: "underline",
+            cursor: "pointer",
+          }}
+        >
+          {params.value}
+        </Link>
+      ),
+    },
+
     { field: "name", headerName: "Name", width: 180, editable: true },
     { field: "contactNumber", headerName: "Phone", width: 120, editable: true },
     { field: "email", headerName: "Email", width: 180, editable: true },
@@ -57,24 +77,25 @@ const ManageDealersContainer = () => {
     },
   ];
 
+  // --------------------------------------get all dealers function---------------------------------
+  const fetchDealers = async () => {
+    try {
+      // const data = await dealerService.getAllDealers(currentToken);
+      const data = await dealerService.getDealerByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch customers");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all dealers function---------------------------------
-    const fetchDealers = async () => {
-      try {
-        const data = await dealerService.getAllDealers(currentToken);
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch customers");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchDealers();
   }, []);
 
@@ -113,7 +134,7 @@ const ManageDealersContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddDealerAccordion setRows={setRows} />
+        <AddDealerAccordion setRows={setRows} fetchDealers={fetchDealers} />
         <br />
 
         <StyledTextField

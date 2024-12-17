@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import DashboardPage from "../pages/DashboardPage";
+import ManageAllPaymentsPage from "../pages/ManageAllPaymentsPage";
 import ManageCashPaymentsPage from "../pages/ManageCashPaymentsPage";
 import ManageCheqPaymentsPage from "../pages/ManageCheqPaymentsPage";
 import ManageCredPaymentsPage from "../pages/ManageCredPaymentsPage";
@@ -20,7 +21,15 @@ import SideBar from "./SideBar";
 const drawerWidth = 250;
 
 const Layout = () => {
-  const { user } = useContext(AuthContext);
+  const { user, currentShopName, currentShopId } = useContext(AuthContext);
+
+  const currentShopId1 = currentShopId || localStorage.getItem("currentShopId");
+  const currentShopName1 =
+    currentShopName || localStorage.getItem("currentShopName");
+
+  console.log(
+    `${currentShopName1} is on id ${currentShopId1.replace(/"/g, "")}`
+  );
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -79,6 +88,9 @@ const Layout = () => {
           </Routes>
           <Routes>
             <Route path="/loans" element={<ManageLoansPage />} />
+          </Routes>
+          <Routes>
+            <Route path="/allpayments" element={<ManageAllPaymentsPage />} />
           </Routes>
         </Box>
       </Box>

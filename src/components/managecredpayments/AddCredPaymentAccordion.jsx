@@ -21,9 +21,8 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
-import GetYearMonthDate from "../common/GetYearMonthDate/GetYearMonthDate";
 
-const AddCredPaymentAccordion = ({ setRows }) => {
+const AddCredPaymentAccordion = ({ setRows, fetchCredPayments }) => {
   const { token } = useContext(AuthContext);
   const currentToken = token || localStorage.getItem("token");
 
@@ -45,7 +44,8 @@ const AddCredPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers(currentToken);
+        // const data = await dealerService.getAllDealers(currentToken);
+        const data = await dealerService.getDealerByShop();
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
@@ -93,17 +93,18 @@ const AddCredPaymentAccordion = ({ setRows }) => {
       setAmount("");
       setPaymentDate("");
       setDueDate("");
-      const data = await credPaymentService.getAllCredPayments();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-        credPaymentId: item.id,
-        paymentDate: GetYearMonthDate(item.paymentDate),
-        dueDate: GetYearMonthDate(item.dueDate),
-        dealer: item?.dealer?.name,
-      }));
+      // const data = await credPaymentService.getAllCredPayments();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   credPaymentId: item.id,
+      //   paymentDate: GetYearMonthDate(item.paymentDate),
+      //   dueDate: GetYearMonthDate(item.dueDate),
+      //   dealer: item?.dealer?.name,
+      // }));
 
-      setRows(mappedData);
+      // setRows(mappedData);
+      fetchCredPayments();
     } catch (err) {
       setError("Failed to add cred payment");
     }

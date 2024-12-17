@@ -21,9 +21,8 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
-import GetYearMonthDate from "../common/GetYearMonthDate/GetYearMonthDate";
 
-const AddCashPaymentAccordion = ({ setRows }) => {
+const AddCashPaymentAccordion = ({ setRows, fetchCashPayments }) => {
   const { user, token } = useContext(AuthContext);
   const currentToken = token || localStorage.getItem("token");
 
@@ -47,7 +46,8 @@ const AddCashPaymentAccordion = ({ setRows }) => {
     // --------------------------------------get all dealers function---------------------------------
     const fetchDealers = async () => {
       try {
-        const data = await dealerService.getAllDealers(currentToken);
+        // const data = await dealerService.getAllDealers(currentToken);
+        const data = await dealerService.getDealerByShop();
         const dealerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
@@ -89,16 +89,17 @@ const AddCashPaymentAccordion = ({ setRows }) => {
       setId(cashId);
       setAmount("");
       setPaymentDate("");
-      const data = await cashPaymentService.getAllCashPayments();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-        cashPaymentId: item.id,
-        paymentDate: GetYearMonthDate(item.paymentDate),
-        dealer: item?.dealer?.name,
-      }));
+      // const data = await cashPaymentService.getAllCashPayments();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   cashPaymentId: item.id,
+      //   paymentDate: GetYearMonthDate(item.paymentDate),
+      //   dealer: item?.dealer?.name,
+      // }));
 
-      setRows(mappedData);
+      // setRows(mappedData);
+      fetchCashPayments();
     } catch (err) {
       setError("Failed to add cash payment");
     }

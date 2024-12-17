@@ -16,6 +16,15 @@ const credPaymentService = {
     return response.data;
   },
 
+  getCredPaymentsByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/credpaymentsbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    console.log("ress>", response);
+    return response.data.filteredCredPayment;
+  },
+
   updateCredPayment: async (id, credpaymentData) => {
     const response = await api.put(`/updatecredpayment/${id}`, credpaymentData);
     return response.data;

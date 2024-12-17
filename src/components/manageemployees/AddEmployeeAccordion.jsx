@@ -4,21 +4,19 @@ import {
   AccordionDetails,
   AccordionSummary,
   Button,
-  FormControl,
   Grid,
-  InputLabel,
-  MenuItem,
-  Select,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import employeeService from "../../services/EmployeeService";
-import shopService from "../../services/ShopService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 
-const AddEmployeeAccordion = ({ setRows }) => {
+const AddEmployeeAccordion = ({ setRows, fetchEmployees }) => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [role, setRole] = useState("");
   const [address, setAddress] = useState("");
@@ -33,31 +31,31 @@ const AddEmployeeAccordion = ({ setRows }) => {
   const [shopOptions, setShopOptions] = useState([]);
   const [selectedShopOptions, setSelectedShopOptions] = useState();
 
-  useEffect(() => {
-    // --------------------------------------get all shops function---------------------------------
-    const fetchShops = async () => {
-      try {
-        const data = await shopService.getAllShops();
-        const shopMappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-        }));
-        setShopOptions(shopMappedData);
-        console.log("mappedData", shopMappedData);
-      } catch (err) {
-        console.log("Failed to fetch shops");
-      }
-    };
+  // useEffect(() => {
+  //   // --------------------------------------get all shops function---------------------------------
+  //   const fetchShops = async () => {
+  //     try {
+  //       const data = await shopService.getAllShops();
+  //       const shopMappedData = data.map((item) => ({
+  //         ...item,
+  //         id: item._id,
+  //       }));
+  //       setShopOptions(shopMappedData);
+  //       console.log("mappedData", shopMappedData);
+  //     } catch (err) {
+  //       console.log("Failed to fetch shops");
+  //     }
+  //   };
 
-    fetchShops();
-  }, []);
-  console.log("shopOptions", shopOptions);
+  //   fetchShops();
+  // }, []);
+  // console.log("shopOptions", shopOptions);
 
-  const handleChange = (event) => {
-    setSelectedShopOptions(event.target.value);
-    console.log("event.target.value", event.target.value);
-    setShop(event.target.value);
-  };
+  // const handleChange = (event) => {
+  //   setSelectedShopOptions(event.target.value);
+  //   console.log("event.target.value", event.target.value);
+  //   setShop(event.target.value);
+  // };
   // -------------------------------------------
 
   const handleSubmit = async (e) => {
@@ -65,7 +63,7 @@ const AddEmployeeAccordion = ({ setRows }) => {
     setError("");
     setSuccess("");
 
-    if (!name || !role || !address || !phone || !shop) {
+    if (!name || !role || !address || !phone) {
       setError("All fields are required");
       return;
     }
@@ -79,13 +77,9 @@ const AddEmployeeAccordion = ({ setRows }) => {
       setAddress("");
       setPhone("");
       setShop("");
-      const data = await employeeService.getAllEmployees();
-      const mappedData = data.map((item) => ({
-        ...item,
-        id: item._id,
-      }));
 
-      setRows(mappedData);
+      // ------------fetch data once added----------------------
+      fetchEmployees();
     } catch (err) {
       setError("Failed to add employee");
     }
@@ -154,7 +148,7 @@ const AddEmployeeAccordion = ({ setRows }) => {
                   variant="outlined"
                 />
 
-                <FormControl sx={{ width: "90%" }} size="small">
+                {/* <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Shop</InputLabel>
                   <Select
                     value={selectedShopOptions}
@@ -197,7 +191,7 @@ const AddEmployeeAccordion = ({ setRows }) => {
                       </MenuItem>
                     ))}
                   </Select>
-                </FormControl>
+                </FormControl> */}
               </Grid>
             </Grid>
 
@@ -217,7 +211,6 @@ const AddEmployeeAccordion = ({ setRows }) => {
           </>
         ))}
       </Grid> */}
-      {selectedShopOptions}
     </>
   );
 };

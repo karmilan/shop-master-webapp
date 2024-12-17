@@ -52,27 +52,28 @@ const ManageProfitsContainer = () => {
     },
   ];
 
+  // --------------------------------------get all profits function---------------------------------
+
+  const fetchProfits = async () => {
+    try {
+      // const data = await profitService.getAllProfits();
+      const data = await profitService.getProfitsByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        shop: item.shop ? item.shop.name : "null",
+        date: GetYearMonth(item.date),
+      }));
+      console.log(mappedData);
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch shops");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all profits function---------------------------------
-
-    const fetchProfits = async () => {
-      try {
-        const data = await profitService.getAllProfits();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-          shop: item.shop ? item.shop.name : "null",
-          date: GetYearMonth(item.date),
-        }));
-        console.log(mappedData);
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch shops");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProfits();
   }, []);
 
@@ -111,7 +112,7 @@ const ManageProfitsContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddProfitAccordion setRows={setRows} />
+        <AddProfitAccordion setRows={setRows} fetchProfits={fetchProfits} />
         <br />
 
         <StyledTextField

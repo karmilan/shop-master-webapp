@@ -5,36 +5,23 @@ import AuthContext from "../context/AuthContext";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [shop, setShop] = useState("");
   const { login } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login(username, password);
+    login(username, password, shop);
   };
 
   return (
     <div>
-      {/* <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Login</button>
-      </form> */}
       <Login
         username={username}
         setUsername={setUsername}
         password={password}
         setPassword={setPassword}
+        shop={shop}
+        setShop={setShop}
         handleSubmit={handleSubmit}
       />
     </div>

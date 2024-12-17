@@ -16,8 +16,29 @@ const dealerService = {
     return response.data;
   },
 
+  getDealerByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    console.log("kkk>>>", id);
+
+    const response = await api.get(
+      `/dealersbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    console.log("deal data", response);
+
+    return response.data.dealer;
+  },
+
   addDealer: async (dealerData) => {
-    const response = await api.post("/adddealer", dealerData);
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    // Assign selected shop
+    const dealerWithShop = {
+      ...dealerData,
+      shop: currentShopId.replace(/"/g, ""),
+    };
+
+    const response = await api.post("/adddealer", dealerWithShop);
     return response.data;
   },
 

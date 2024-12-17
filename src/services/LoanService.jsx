@@ -11,6 +11,16 @@ const loanService = {
     return response.data;
   },
 
+  getLoansByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/creditbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    console.log("ress>", response);
+
+    return response.data.filteredCredits;
+  },
+
   addLoans: async (loanData) => {
     const response = await api.post("/addcredit", loanData);
     return response.data;

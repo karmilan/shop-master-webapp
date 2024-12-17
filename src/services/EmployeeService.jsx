@@ -12,9 +12,24 @@ const employeeService = {
   },
 
   addEmployee: async (employeeData) => {
-    console.log(employeeData);
-    const response = await api.post("/addemployee", employeeData);
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    // Assign selected shop
+    const employeeWithShop = {
+      ...employeeData,
+      shop: currentShopId.replace(/"/g, ""),
+    };
+
+    const response = await api.post("/addemployee", employeeWithShop);
     return response.data;
+  },
+
+  getEmployeesByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/employeesbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    return response.data.employee;
   },
 
   updateEmployee: async (id, employeeData) => {

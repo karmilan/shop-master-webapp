@@ -6,7 +6,9 @@ import { _NavBar } from "../styles/NavBarStyles";
 import AccountMenu from "./AccountMenu";
 
 const NavBar = ({ handleDrawerToggle }) => {
-  const { user, currentUser, logout } = useContext(AuthContext);
+  const { currentShopName } = useContext(AuthContext);
+  const currentShopName1 =
+    currentShopName || localStorage.getItem("currentShopName");
 
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -36,7 +38,9 @@ const NavBar = ({ handleDrawerToggle }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            SHOP MASTER - {import.meta.env.VITE_ENV}
+            SHOP MASTER -{" "}
+            <span style={{ fontSize: "15px" }}>{import.meta.env.VITE_ENV}</span>{" "}
+            -<span style={{ fontSize: "15px" }}>{currentShopName1}</span>
           </Typography>
 
           {/* --------------------------profile and settings---------------------------- */}

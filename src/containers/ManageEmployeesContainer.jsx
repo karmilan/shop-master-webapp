@@ -49,25 +49,27 @@ const ManageEmployeesContainer = () => {
     },
   ];
 
+  // --------------------------------------get all employees function---------------------------------
+  const fetchEmployees = async () => {
+    try {
+      // const data = await employeeService.getAllEmployees();
+      const data = await employeeService.getEmployeesByShop();
+      const mappedData = data.map((item) => ({
+        ...item,
+        id: item._id,
+        shop: item?.shop?.name,
+      }));
+
+      setRows(mappedData);
+    } catch (err) {
+      setError("Failed to fetch shops");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // --------------------------------------get all employees function---------------------------------
-    const fetchShops = async () => {
-      try {
-        const data = await employeeService.getAllEmployees();
-        const mappedData = data.map((item) => ({
-          ...item,
-          id: item._id,
-        }));
-
-        setRows(mappedData);
-      } catch (err) {
-        setError("Failed to fetch shops");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchShops();
+    fetchEmployees();
   }, []);
 
   // ------------------------------------update shop details function --------------------------------------
@@ -105,7 +107,10 @@ const ManageEmployeesContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddEmployeeAccordion setRows={setRows} />
+        <AddEmployeeAccordion
+          setRows={setRows}
+          fetchEmployees={fetchEmployees}
+        />
         <br />
 
         <StyledTextField

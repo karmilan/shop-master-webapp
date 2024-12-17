@@ -12,8 +12,23 @@ const expenseService = {
   },
 
   addExpense: async (expenseData) => {
-    const response = await api.post("/addexpense", expenseData);
+    const currentShopId = localStorage.getItem("currentShopId");
+
+    // Assign selected shop
+    const expenseWithShop = {
+      ...expenseData,
+      shop: currentShopId.replace(/"/g, ""),
+    };
+    const response = await api.post("/addexpense", expenseWithShop);
     return response.data;
+  },
+
+  getExpensesByShop: async (id) => {
+    const currentShopId = localStorage.getItem("currentShopId");
+    const response = await api.get(
+      `/expensesbyshop/${currentShopId.replace(/"/g, "")}`
+    );
+    return response.data.expense;
   },
 
   updateExpense: async (id, expenseData) => {
