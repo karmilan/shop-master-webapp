@@ -26,6 +26,10 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const [totalLoanAmount, setTotalLoanAmount] = useState();
+  const [customerCreditLimit, setCustomerCreditLimit] = useState();
+  const [isExceeding, setIsExceeding] = useState(false);
+
   // ----------fetch customers------------------
 
   const [customerOptions, setCustomerOptions] = useState([]);
@@ -50,10 +54,32 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     fetchCustomers();
   }, []);
 
+  const loanLimit = async (selectedCustomerId) => {
+    ////selected customer
+    const selectedCust = await customerService.getCustomerById(
+      selectedCustomerId
+    );
+    //////////Loans by customer
+    const loansByCustomer = await loanService.getLoansByCustomer(
+      selectedCustomerId
+    );
+    /////////total loan amount for selected user
+    const totalLoanAmount = loansByCustomer.reduce(
+      (sum, item) => sum + item.amount,
+      0
+    );
+    setTotalLoanAmount(totalLoanAmount);
+    setCustomerCreditLimit(selectedCust.customer.creditLimit);
+    if (totalLoanAmount > selectedCust.customer.creditLimit) {
+      setError("Loan amount exceeds the credit limit!");
+      setIsExceeding(true);
+    }
+  };
+
   const handleChange = (event) => {
     setSelectedCustomerOptions(event.target.value);
-    console.log("event.target.value", event.target.value);
     setCustomer(event.target.value);
+    loanLimit(event.target.value);
   };
   // -------------------------------------------
 
@@ -67,12 +93,26 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
       return;
     }
 
+    if (amount < 1) {
+      setError("Enter valid Amount");
+      return;
+    }
+
+    const currentLoanAmount = totalLoanAmount + Number(amount);
+    if (currentLoanAmount > customerCreditLimit) {
+      setError("Loan amount exceeds the credit limit!");
+      return;
+    }
+
     try {
       const newLoan = { customer, amount };
       await loanService.addLoans(newLoan);
+      console.log("customerOptions>>>", customerOptions);
+
+      setAmount("");
+      setCustomer(null);
       setSuccess("Loan added successfully");
-      setCustomer("");
-      setAmount();
+
       // const data = await loanService.getAllLoans();
       // const mappedData = data.map((item) => ({
       //   ...item,
@@ -81,6 +121,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
       // }));
 
       // setRows(mappedData);
+
       fetchLoans();
     } catch (err) {
       setError("Failed to add customer");
@@ -112,6 +153,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
                 <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: "white" }}>Customer</InputLabel>
                   <StyledSelect
+                    defaultValue="Cus"
                     value={selectedCustomerOptions}
                     label="Customer"
                     onChange={handleChange}
@@ -124,6 +166,9 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
                       },
                     }}
                   >
+                    <MenuItem value="" disabled>
+                      Select an option
+                    </MenuItem>
                     {customerOptions.map((customerOption) => (
                       <MenuItem
                         sx={{ color: "white", backgroundColor: "transparent" }}
@@ -147,6 +192,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
               >
                 <StyledTextField
                   label="Amount"
+                  type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   variant="outlined"
@@ -159,7 +205,9 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
           </AccordionDetails>
           <AccordionActions>
             <Button>Cancel</Button>
-            <Button type="submit">Add Loan</Button>
+            <Button disabled={isExceeding ? true : false} type="submit">
+              Add Loan
+            </Button>
           </AccordionActions>
         </StyledAccordion>
       </form>

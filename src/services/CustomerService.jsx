@@ -7,7 +7,7 @@ const customerService = {
   },
 
   getCustomerById: async (id) => {
-    const response = await api.get(`/customers/${id}`);
+    const response = await api.get(`/customer/${id}`);
     return response.data;
   },
 
