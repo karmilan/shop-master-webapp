@@ -116,11 +116,33 @@ const DrawerItems = () => {
         />
 
         {/* ///////////manage credit */}
+        {/* <MenuItems
+          isSubmenu={true}
+          menuItemText="Manage Loans"
+          menuItemIcon={<AddCardIcon fontSize="small" />}
+          linkTo="/loans"
+        /> */}
+      </CollapseMenuItems>
+
+      {/* ---------------------------------Loan management menu---------------------------------------- */}
+      <CollapseMenuItems
+        collMenuText="Loan Management"
+        collMenuIcon={<ManageAccountsIcon fontSize="small" />}
+      >
+        {/* ///////////manage credit */}
         <MenuItems
           isSubmenu={true}
           menuItemText="Manage Loans"
           menuItemIcon={<AddCardIcon fontSize="small" />}
           linkTo="/loans"
+        />
+
+        {/* ///////////manage loan settlements */}
+        <MenuItems
+          isSubmenu={true}
+          menuItemText="Manage Loan Settlements"
+          menuItemIcon={<AddCardIcon fontSize="small" />}
+          linkTo="/loansettlements"
         />
       </CollapseMenuItems>
     </>

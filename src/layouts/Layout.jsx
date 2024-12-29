@@ -11,6 +11,7 @@ import ManageCustomersPage from "../pages/ManageCustomersPage";
 import ManageDealersPage from "../pages/ManageDealersPage";
 import ManageEmployeesPage from "../pages/ManageEmployeesPage";
 import ManageExpensesPage from "../pages/ManageExpensesPage";
+import ManageLoanSettlementPage from "../pages/ManageLoanSettlementPage";
 import ManageLoansPage from "../pages/ManageLoansPage";
 import ManageProfitsPage from "../pages/ManageProfitsPage";
 import ManageShopsPage from "../pages/ManageShopsPage";
@@ -88,6 +89,12 @@ const Layout = () => {
           </Routes>
           <Routes>
             <Route path="/loans" element={<ManageLoansPage />} />
+          </Routes>
+          <Routes>
+            <Route
+              path="/loansettlements"
+              element={<ManageLoanSettlementPage />}
+            />
           </Routes>
           <Routes>
             <Route path="/allpayments" element={<ManageAllPaymentsPage />} />
