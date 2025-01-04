@@ -45,6 +45,7 @@ const Layout = () => {
         <SideBar
           drawerWidth={drawerWidth}
           mobileOpen={mobileOpen}
+          setMobileOpen={setMobileOpen}
           handleDrawerToggle={handleDrawerToggle}
         />
         <Box

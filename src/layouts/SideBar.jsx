@@ -7,6 +7,7 @@ const SideBar = ({
   mobileOpen,
   handleDrawerToggle,
   customTheme,
+  setMobileOpen,
 }) => {
   return (
     <>
@@ -34,7 +35,7 @@ const SideBar = ({
             },
           }}
         >
-          <DrawerItems />
+          <DrawerItems setMobileOpen={setMobileOpen} />
         </Drawer>
         <Drawer
           variant="permanent"

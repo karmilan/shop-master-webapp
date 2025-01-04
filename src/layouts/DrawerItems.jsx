@@ -11,7 +11,7 @@ import StorefrontIcon from "@mui/icons-material/Storefront";
 import CollapseMenuItems from "./CollapseMenuItems";
 import MenuItems from "./MenuItems";
 
-const DrawerItems = () => {
+const DrawerItems = ({ setMobileOpen }) => {
   return (
     <>
       <MenuItems
@@ -19,6 +19,7 @@ const DrawerItems = () => {
         menuItemText="Dashboard"
         menuItemIcon={<HomeIcon fontSize="small" />}
         linkTo="/"
+        setMobileOpen={setMobileOpen}
       />
 
       {/* ---------------------------------shop management menu---------------------------------------- */}
@@ -31,6 +32,7 @@ const DrawerItems = () => {
           menuItemText="Manage Shops"
           menuItemIcon={<StorefrontIcon fontSize="small" />}
           linkTo="/shops"
+          setMobileOpen={setMobileOpen}
         />
       </CollapseMenuItems>
 
@@ -45,6 +47,7 @@ const DrawerItems = () => {
           menuItemText="Manage Employees"
           menuItemIcon={<AssignmentIndIcon fontSize="small" />}
           linkTo="/employees"
+          setMobileOpen={setMobileOpen}
         />
       </CollapseMenuItems>
 
@@ -54,6 +57,7 @@ const DrawerItems = () => {
         menuItemText="Profit Management"
         menuItemIcon={<MonetizationOnIcon fontSize="small" />}
         linkTo="/profits"
+        setMobileOpen={setMobileOpen}
       />
 
       {/* ---------------------------------expense management menu---------------------------------------- */}
@@ -62,6 +66,7 @@ const DrawerItems = () => {
         menuItemText="Expense Management"
         menuItemIcon={<PriceChangeIcon fontSize="small" />}
         linkTo="/expenses"
+        setMobileOpen={setMobileOpen}
       />
 
       {/* ---------------------------------dealer management menu---------------------------------------- */}
@@ -75,6 +80,7 @@ const DrawerItems = () => {
           menuItemText="Manage Dealers"
           menuItemIcon={<GroupIcon fontSize="small" />}
           linkTo="/dealers"
+          setMobileOpen={setMobileOpen}
         />
 
         {/* ///////////manage cash payment */}
@@ -83,6 +89,7 @@ const DrawerItems = () => {
           menuItemText="Manage Cash Payments"
           menuItemIcon={<GroupIcon fontSize="small" />}
           linkTo="/cashpayments"
+          setMobileOpen={setMobileOpen}
         />
 
         {/* ///////////manage cheque payment */}
@@ -91,6 +98,7 @@ const DrawerItems = () => {
           menuItemText="Manage Cheque Payments"
           menuItemIcon={<AddCardIcon fontSize="small" />}
           linkTo="/cheqpayments"
+          setMobileOpen={setMobileOpen}
         />
 
         {/* ///////////manage credit payment */}
@@ -99,6 +107,7 @@ const DrawerItems = () => {
           menuItemText="Manage Credit Payments"
           menuItemIcon={<AddCardIcon fontSize="small" />}
           linkTo="/credpayments"
+          setMobileOpen={setMobileOpen}
         />
       </CollapseMenuItems>
 
@@ -113,6 +122,7 @@ const DrawerItems = () => {
           menuItemText="Manage Customers"
           menuItemIcon={<GroupIcon fontSize="small" />}
           linkTo="/customers"
+          setMobileOpen={setMobileOpen}
         />
 
         {/* ///////////manage credit */}
@@ -135,6 +145,7 @@ const DrawerItems = () => {
           menuItemText="Manage Loans"
           menuItemIcon={<AddCardIcon fontSize="small" />}
           linkTo="/loans"
+          setMobileOpen={setMobileOpen}
         />
 
         {/* ///////////manage loan settlements */}
@@ -143,6 +154,7 @@ const DrawerItems = () => {
           menuItemText="Manage Loan Settlements"
           menuItemIcon={<AddCardIcon fontSize="small" />}
           linkTo="/loansettlements"
+          setMobileOpen={setMobileOpen}
         />
       </CollapseMenuItems>
     </>

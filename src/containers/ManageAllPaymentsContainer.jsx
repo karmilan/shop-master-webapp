@@ -1,17 +1,13 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import AddDealerAccordion from "../components/manageDealers/AddDealerAccordion";
-import AuthContext from "../context/AuthContext";
-import dealerService from "../services/DealerService";
+import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
+import allPaymentsService from "../services/AllPaymentService ";
+import cashPaymentService from "../services/CashPaymentService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import { StyledTextField } from "../templates/TextField/StyledTextField";
 
-const ManageDealersContainer = () => {
-  const { user, token } = useContext(AuthContext);
-  const currentToken = token || localStorage.getItem("token");
-
+const ManageAllPaymentsContainer = ({ dealerId }) => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -32,42 +28,21 @@ const ManageDealersContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.contactNumber.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.address.toLowerCase().includes(filterText.toLowerCase())
+      // row.cashPaymentId.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.dealer.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.amount.toString().includes(filterText) ||
+      row.paymentDate.toLowerCase().includes(filterText.toLowerCase())
   );
 
-  // -------------------------------------columns for customer data grid-----------------------------
+  // -------------------------------------columns for employee data grid-----------------------------
   const columns = [
+    { field: "id", headerName: "ID", width: 180, editable: false },
+    { field: "type", headerName: "Payment Type", width: 180, editable: true },
+    { field: "amount", headerName: "Amount", width: 100, editable: true },
     {
-      field: "dealerId",
-      headerName: "ID",
-      width: 180,
-      editable: false,
-      renderCell: (params) => (
-        <Link
-          to="/allpayments"
-          state={{ _dealerId: params.row._id }}
-          style={{
-            color: "#1976d2",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          {params.value}
-        </Link>
-      ),
-    },
-
-    { field: "name", headerName: "Name", width: 180, editable: true },
-    { field: "contactNumber", headerName: "Phone", width: 120, editable: true },
-    { field: "email", headerName: "Email", width: 180, editable: true },
-    { field: "address", headerName: "Address", width: 220, editable: true },
-    {
-      field: "creditLimit",
-      headerName: "Credit Limit",
-      width: 100,
+      field: "paymentDate",
+      headerName: "Payment Date",
+      width: 120,
       editable: true,
     },
     {
@@ -77,33 +52,37 @@ const ManageDealersContainer = () => {
     },
   ];
 
-  // --------------------------------------get all dealers function---------------------------------
-  const fetchDealers = async () => {
+  // --------------------------------------get all cash payments function---------------------------------
+  const fetchAllPayments = async () => {
     try {
-      // const data = await dealerService.getAllDealers(currentToken);
-      const data = await dealerService.getDealerByShop();
+      console.log("get id>>>", dealerId);
+
+      // const data = await cashPaymentService.getAllCashPayments();
+      const data = await allPaymentsService.getAllPaymentsByDealer(dealerId);
       const mappedData = data.map((item) => ({
         ...item,
-        id: item._id,
+        // id: item._id,
+        paymentDate: GetYearMonthDate(item.paymentDate),
+        dealer: item?.dealer?.name,
       }));
 
       setRows(mappedData);
     } catch (err) {
-      setError("Failed to fetch customers");
+      setError("Failed to fetch cash payments");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDealers();
+    fetchAllPayments();
   }, []);
 
-  // ------------------------------------update shop details function --------------------------------------
+  // ------------------------------------update cash payment details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
     try {
-      await dealerService.updateDealer(newRow.id, newRow);
+      await cashPaymentService.updateCashPayment(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -119,10 +98,10 @@ const ManageDealersContainer = () => {
     }
   };
 
-  // ----------------------------------------delete Dealer----------------------------------------------------
+  // ----------------------------------------delete cash payment----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await dealerService.deleteDealer(id);
+      await cashPaymentService.deleteCashPayment(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -134,8 +113,11 @@ const ManageDealersContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddDealerAccordion setRows={setRows} fetchDealers={fetchDealers} />
-        <br />
+        {/* <AddCashPaymentAccordion
+          setRows={setRows}
+          fetchCashPayments={fetchCaPayments}
+        /> */}
+        {/* <br /> */}
 
         <StyledTextField
           label="Search"
@@ -163,10 +145,12 @@ const ManageDealersContainer = () => {
           setDeleteAlertOpen={setDeleteAlertOpen}
           setDeleteSnackbarOpen={setDeleteSnackbarOpen}
           deleteSnackbarOpen={deleteSnackbarOpen}
+          editable={false}
+          deletable={false}
         />
       </StyledPaper>
     </>
   );
 };
 
-export default ManageDealersContainer;
+export default ManageAllPaymentsContainer;

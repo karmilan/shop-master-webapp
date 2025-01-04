@@ -39,6 +39,8 @@ const GetDataGrid = ({
   setDeleteAlertOpen,
   deleteSnackbarOpen,
   setDeleteSnackbarOpen,
+  editable = true,
+  deletable = true,
 }) => {
   const [alertSeverity, setAlertSeverity] = useState(); // State for alert severity
 
@@ -124,19 +126,26 @@ const GetDataGrid = ({
       }
 
       return [
-        <GridActionsCellItem
-          icon={<EditIcon />}
-          label="Edit"
-          onClick={handleEditClick(id)}
-          color="inherit"
-        />,
-        <GridActionsCellItem
-          icon={<DeleteIcon />}
-          label="Delete"
-          // onClick={handleDeleteClick(id)}
-          onClick={handleClickOpen(id)}
-          color="inherit"
-        />,
+        <>
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            onClick={handleEditClick(id)}
+            color="inherit"
+            sx={{ opacity: !editable ? "0.3" : "unset" }}
+            disabled={!editable}
+          />
+
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            // onClick={handleDeleteClick(id)}
+            onClick={handleClickOpen(id)}
+            color="inherit"
+            sx={{ opacity: !editable ? "0.3" : "unset" }}
+            disabled={!deletable}
+          />
+        </>,
       ];
     },
   };
