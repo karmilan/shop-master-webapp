@@ -1,8 +1,11 @@
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Box,
   Button,
   Container,
   FormControl,
+  IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Paper,
@@ -26,6 +29,7 @@ const Login = ({
   // const [shop, setShop] = useState("");
   const [shopOptions, setShopOptions] = useState([]);
   const [selectedShopOptions, setSelectedShopOptions] = useState();
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     // --------------------------------------get all shops function---------------------------------
@@ -91,14 +95,27 @@ const Login = ({
             fullWidth
             required
           />
+
           <TextField
             label="Password"
             variant="outlined"
-            type="password"
+            type={!showPassword ? "password" : "text"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
             required
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {!showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           {/* --------------------------------------------shop selections-------------------------------------- */}

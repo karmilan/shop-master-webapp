@@ -1,11 +1,12 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddLoanAccordion from "../components/manageLoans/AddLoanAccordion";
 import loanService from "../services/LoanService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
-import { StyledTextField } from "../templates/TextField/StyledTextField";
+import SearchBar from "../templates/SearchBar/SearchBar";
 
 const ManageLoansContainer = () => {
   const [rows, setRows] = useState([]);
@@ -24,6 +25,10 @@ const ManageLoansContainer = () => {
   const [filterText, setFilterText] = useState(""); // State for filter text
   const handleFilterChange = (event) => {
     setFilterText(event.target.value);
+  };
+
+  const clearSearchBar = () => {
+    setFilterText("");
   };
 
   const filteredRows = rows.filter(
@@ -108,14 +113,22 @@ const ManageLoansContainer = () => {
         <AddLoanAccordion setRows={setRows} fetchLoans={fetchLoans} />
         <br />
 
-        <StyledTextField
+        {/* <StyledTextField
           label="Search"
           variant="outlined"
           value={filterText}
           onChange={handleFilterChange}
           sx={{ width: "20%", mb: 2 }}
-        />
+        /> */}
 
+        <Box sx={{ mb: 2 }}>
+          <SearchBar
+            value={filterText}
+            onChange={handleFilterChange}
+            placeholder="Search..."
+            clear={clearSearchBar}
+          />
+        </Box>
         <GetDataGrid
           columns={columns}
           rows={rows}

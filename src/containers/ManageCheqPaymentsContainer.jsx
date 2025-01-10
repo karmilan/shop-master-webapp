@@ -1,11 +1,12 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
+import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddCheqPaymentAccordion from "../components/managecheqpayments/AddCheqPaymentAccordion";
 import cheqPaymentService from "../services/CheqPaymentService ";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
-import { StyledTextField } from "../templates/TextField/StyledTextField";
+import SearchBar from "../templates/SearchBar/SearchBar";
 
 const ManageCheqPaymentsContainer = () => {
   const [rows, setRows] = useState([]);
@@ -24,6 +25,10 @@ const ManageCheqPaymentsContainer = () => {
   const [filterText, setFilterText] = useState(""); // State for filter text
   const handleFilterChange = (event) => {
     setFilterText(event.target.value);
+  };
+
+  const clearSearchBar = () => {
+    setFilterText("");
   };
 
   const filteredRows = rows.filter(
@@ -136,13 +141,22 @@ const ManageCheqPaymentsContainer = () => {
         />
         <br />
 
-        <StyledTextField
+        {/* <StyledTextField
           label="Search"
           variant="outlined"
           value={filterText}
           onChange={handleFilterChange}
           sx={{ width: "20%", mb: 2 }}
-        />
+        /> */}
+
+        <Box sx={{ mb: 2 }}>
+          <SearchBar
+            value={filterText}
+            onChange={handleFilterChange}
+            placeholder="Search..."
+            clear={clearSearchBar}
+          />
+        </Box>
 
         <GetDataGrid
           columns={columns}

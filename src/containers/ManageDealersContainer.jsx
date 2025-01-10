@@ -1,4 +1,5 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
+import { Box } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
@@ -6,7 +7,7 @@ import AddDealerAccordion from "../components/manageDealers/AddDealerAccordion";
 import AuthContext from "../context/AuthContext";
 import dealerService from "../services/DealerService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
-import { StyledTextField } from "../templates/TextField/StyledTextField";
+import SearchBar from "../templates/SearchBar/SearchBar";
 
 const ManageDealersContainer = () => {
   const { user, token } = useContext(AuthContext);
@@ -28,6 +29,10 @@ const ManageDealersContainer = () => {
   const [filterText, setFilterText] = useState(""); // State for filter text
   const handleFilterChange = (event) => {
     setFilterText(event.target.value);
+  };
+
+  const clearSearchBar = () => {
+    setFilterText("");
   };
 
   const filteredRows = rows.filter(
@@ -137,13 +142,22 @@ const ManageDealersContainer = () => {
         <AddDealerAccordion setRows={setRows} fetchDealers={fetchDealers} />
         <br />
 
-        <StyledTextField
+        {/* <StyledTextField
           label="Search"
           variant="outlined"
           value={filterText}
           onChange={handleFilterChange}
           sx={{ width: "20%", mb: 2 }}
-        />
+        /> */}
+
+        <Box sx={{ mb: 2 }}>
+          <SearchBar
+            value={filterText}
+            onChange={handleFilterChange}
+            placeholder="Search..."
+            clear={clearSearchBar}
+          />
+        </Box>
 
         <GetDataGrid
           columns={columns}

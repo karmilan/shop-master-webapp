@@ -39,7 +39,7 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
     setError("");
     setSuccess("");
 
-    if (!dealerId || !name || !address || !contactNumber || !email) {
+    if (!dealerId || !name || !contactNumber) {
       setError("All fields are required");
       return;
     }
@@ -48,20 +48,20 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
       const newDealer = {
         dealerId,
         name,
-        address,
+        // address,
         contactNumber,
-        email,
-        creditLimit,
+        // email,
+        // creditLimit,
       };
       await dealerService.addDealer(newDealer);
       setSuccess("Dealer added successfully");
       const uniqDealerId = GenerateUniqueId("dlr");
       setdealerId(uniqDealerId);
       setName("");
-      setAddress("");
+      // setAddress("");
       setContactNumber("");
-      setEmail("");
-      setCreditLimit("");
+      // setEmail("");
+      // setCreditLimit("");
       // const data = await dealerService.getAllDealers(currentToken);
       // const mappedData = data.map((item) => ({
       //   ...item,
@@ -118,13 +118,13 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
                   margin="normal"
                   variant="outlined"
                 />
-                <StyledTextField
+                {/* <StyledTextField
                   label="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   margin="normal"
                   variant="outlined"
-                />
+                /> */}
               </Grid>
 
               <Grid
@@ -142,7 +142,7 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
                   margin="normal"
                   variant="outlined"
                 />
-                <StyledTextField
+                {/* <StyledTextField
                   label="Address"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -156,7 +156,7 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
                   onChange={(e) => setCreditLimit(e.target.value)}
                   margin="normal"
                   variant="outlined"
-                />
+                /> */}
               </Grid>
             </Grid>
 

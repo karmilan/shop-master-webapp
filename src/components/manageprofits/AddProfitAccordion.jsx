@@ -1,3 +1,4 @@
+import { CalendarMonth } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   AccordionActions,
@@ -5,6 +6,7 @@ import {
   AccordionSummary,
   Button,
   Grid,
+  InputAdornment,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -149,7 +151,17 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
                   label="Date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
+                  margin="normal"
                   variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
               </Grid>
 
