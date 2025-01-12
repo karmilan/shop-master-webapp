@@ -21,7 +21,8 @@ export const AuthProvider = ({ children }) => {
         {
           username,
           password,
-          shop,
+          // shop,
+          ...(shop && { shop }),
         }
       );
       console.log("shop<><>", shop);
@@ -29,10 +30,14 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       setToken(response.data.token);
       setRole(response.data.user.role);
-      setCurrentShopId(response.data.assignedShop._id);
-      setCurrentShopName(response.data.assignedShop.name);
+      setCurrentShopId(
+        response.data.assignedShop ? response.data.assignedShop._id : null
+      );
+      setCurrentShopName(
+        response.data.assignedShop ? response.data.assignedShop.name : null
+      );
 
-      navigate("/");
+      shop ? navigate("/") : navigate("/createshop");
 
       localStorage.setItem("user", JSON.stringify(response.data));
       localStorage.setItem("token", JSON.stringify(response.data.token));

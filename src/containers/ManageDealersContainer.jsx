@@ -38,9 +38,9 @@ const ManageDealersContainer = () => {
   const filteredRows = rows.filter(
     (row) =>
       row.name.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.contactNumber.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.email.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.address.toLowerCase().includes(filterText.toLowerCase())
+      row.contactNumber.toLowerCase().includes(filterText.toLowerCase())
+    // row.email.toLowerCase().includes(filterText.toLowerCase()) ||
+    // row.address.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for customer data grid-----------------------------
@@ -67,14 +67,14 @@ const ManageDealersContainer = () => {
 
     { field: "name", headerName: "Name", width: 180, editable: true },
     { field: "contactNumber", headerName: "Phone", width: 120, editable: true },
-    { field: "email", headerName: "Email", width: 180, editable: true },
-    { field: "address", headerName: "Address", width: 220, editable: true },
-    {
-      field: "creditLimit",
-      headerName: "Credit Limit",
-      width: 100,
-      editable: true,
-    },
+    // { field: "email", headerName: "Email", width: 180, editable: true },
+    // { field: "address", headerName: "Address", width: 220, editable: true },
+    // {
+    //   field: "creditLimit",
+    //   headerName: "Credit Limit",
+    //   width: 100,
+    //   editable: true,
+    // },
     {
       field: "createdAt",
       headerName: "Create Data",
