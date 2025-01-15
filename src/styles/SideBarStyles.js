@@ -6,7 +6,7 @@ export const _SideBar = {
   wrapperBox: {
     backgroundColor: _Colors.sideBar.backgroundColor,
     borderRight: '1px solid #304050',
-    pt: '100px',
+    pt: '70px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
     // height: 'auto'
   },

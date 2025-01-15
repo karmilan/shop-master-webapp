@@ -1,6 +1,4 @@
 import AddCardIcon from "@mui/icons-material/AddCard";
-import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import BadgeIcon from "@mui/icons-material/Badge";
 import GroupIcon from "@mui/icons-material/Group";
 import HomeIcon from "@mui/icons-material/Home";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -8,12 +6,44 @@ import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import StoreIcon from "@mui/icons-material/Store";
 import StorefrontIcon from "@mui/icons-material/Storefront";
+import { Divider, Grid, Typography } from "@mui/material";
+import { useContext } from "react";
+import Colors from "../constants/colors";
+import AuthContext from "../context/AuthContext";
 import CollapseMenuItems from "./CollapseMenuItems";
 import MenuItems from "./MenuItems";
 
 const DrawerItems = ({ setMobileOpen }) => {
+  const { currentShopName } = useContext(AuthContext);
+  const currentShopName1 =
+    currentShopName || localStorage.getItem("currentShopName");
   return (
     <>
+      {/* SideBar top section start */}
+      <Grid
+        container
+        flexDirection="column"
+        alignItems="center"
+        marginBottom="30px"
+      >
+        <Typography
+          sx={{ color: Colors.light500 }}
+          variant="h6"
+          noWrap
+          component="div"
+        >
+          SHOP MASTER -{" "}
+          <span style={{ fontSize: "15px" }}>{import.meta.env.VITE_ENV}</span>
+        </Typography>
+
+        <Typography sx={{ color: Colors.light500 }}>
+          {" "}
+          {currentShopName1.replace(/"/g, "")}
+        </Typography>
+      </Grid>
+      <Divider sx={{ borderColor: Colors.light700 }} />
+      {/* SideBar top section end */}
+
       <MenuItems
         isSubmenu={false}
         menuItemText="Dashboard"
@@ -37,19 +67,19 @@ const DrawerItems = ({ setMobileOpen }) => {
       </CollapseMenuItems>
 
       {/* ---------------------------------employee management menu---------------------------------------- */}
-      <CollapseMenuItems
+      {/* <CollapseMenuItems
         collMenuText="Employee Management"
         collMenuIcon={<BadgeIcon fontSize="small" />}
-      >
-        {/* ///////////manage employee */}
-        <MenuItems
+      > */}
+      {/* ///////////manage employee */}
+      {/* <MenuItems
           isSubmenu={true}
           menuItemText="Manage Employees"
           menuItemIcon={<AssignmentIndIcon fontSize="small" />}
           linkTo="/employees"
           setMobileOpen={setMobileOpen}
         />
-      </CollapseMenuItems>
+      </CollapseMenuItems> */}
 
       {/* ---------------------------------profit management menu---------------------------------------- */}
       <MenuItems
