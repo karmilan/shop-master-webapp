@@ -1,13 +1,10 @@
 import Logout from "@mui/icons-material/Logout";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import {
-  default as Settings,
-  default as SettingsIcon,
-} from "@mui/icons-material/Settings";
+import { default as Settings } from "@mui/icons-material/Settings";
+import { Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
@@ -15,9 +12,11 @@ import Tooltip from "@mui/material/Tooltip";
 import { useContext, useState } from "react";
 import Colors from "../constants/colors";
 import AuthContext from "../context/AuthContext";
+import { removeApostrophes } from "../utils/stringUtils";
 
 const AccountMenu = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { userName, logout } = useContext(AuthContext);
+  const currentUserName = userName || localStorage.getItem("userName");
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -31,7 +30,7 @@ const AccountMenu = () => {
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
-          <IconButton
+          {/* <IconButton
             onClick={handleClick}
             size="small"
             sx={{ ml: 2 }}
@@ -39,7 +38,6 @@ const AccountMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            {/* <Avatar sx={{ width: 32, height: 32 }}>M</Avatar> */}
             <SettingsIcon
               sx={{
                 width: 32,
@@ -47,7 +45,28 @@ const AccountMenu = () => {
                 color: { xs: Colors.light500, sm: Colors.primary700 },
               }}
             />
-          </IconButton>
+          </IconButton> */}
+          {/* --------------setting btn-------------------------------- */}
+          {/* <PrimaryBtn
+            onClick={handleClick}
+            variant="contained"
+            startIcon={<Person />}
+          >
+            {removeApostrophes(currentUserName)}
+          </PrimaryBtn> */}
+          <Chip
+            onClick={handleClick}
+            avatar={<Avatar />}
+            label={removeApostrophes(currentUserName)}
+            sx={{
+              bgcolor: Colors.primary700,
+              color: Colors.light500,
+              "&:hover": {
+                background: "#0b3d3e",
+              },
+            }}
+            // variant="outlined"
+          />
         </Tooltip>
       </Box>
       <Menu

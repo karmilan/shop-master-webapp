@@ -1,3 +1,4 @@
+import { removeApostrophes } from "../utils/stringUtils";
 import api from "./Api";
 
 const expenseService = {
@@ -17,7 +18,7 @@ const expenseService = {
     // Assign selected shop
     const expenseWithShop = {
       ...expenseData,
-      shop: currentShopId.replace(/"/g, ""),
+      shop: removeApostrophes(currentShopId),
     };
     console.log("expenseWithShop", expenseWithShop);
     const response = await api.post("/addexpense", expenseWithShop);
@@ -29,7 +30,7 @@ const expenseService = {
   getExpensesByShop: async (id) => {
     const currentShopId = localStorage.getItem("currentShopId");
     const response = await api.get(
-      `/expensesbyshop/${currentShopId.replace(/"/g, "")}`
+      `/expensesbyshop/${removeApostrophes(currentShopId)}`
     );
     return response.data.expense;
   },

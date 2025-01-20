@@ -28,10 +28,6 @@ const Layout = () => {
   const currentShopName1 =
     currentShopName || localStorage.getItem("currentShopName");
 
-  console.log(
-    `${currentShopName1} is on id ${currentShopId1.replace(/"/g, "")}`
-  );
-
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleDrawerToggle = () => {

@@ -1,8 +1,9 @@
+import { removeApostrophes } from "../utils/stringUtils";
 import api from "./Api";
 
 const dealerService = {
   getAllDealers: async (token) => {
-    const tokenVal = token.replace(/"/g, "");
+    const tokenVal = removeApostrophes(token);
     const response = await api.get("/dealers", {
       headers: { Authorization: `Bearer ${tokenVal}` },
     });
@@ -22,7 +23,7 @@ const dealerService = {
     console.log("kkk>>>", id);
 
     const response = await api.get(
-      `/dealersbyshop/${currentShopId.replace(/"/g, "")}`
+      `/dealersbyshop/${removeApostrophes(currentShopId)}`
     );
     console.log("deal data", response);
 
@@ -35,7 +36,7 @@ const dealerService = {
     // Assign selected shop
     const dealerWithShop = {
       ...dealerData,
-      shop: currentShopId.replace(/"/g, ""),
+      shop: removeApostrophes(currentShopId),
     };
 
     const response = await api.post("/adddealer", dealerWithShop);

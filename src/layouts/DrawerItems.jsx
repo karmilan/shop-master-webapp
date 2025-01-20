@@ -10,6 +10,7 @@ import { Divider, Grid, Typography } from "@mui/material";
 import { useContext } from "react";
 import Colors from "../constants/colors";
 import AuthContext from "../context/AuthContext";
+import { removeApostrophes } from "../utils/stringUtils";
 import CollapseMenuItems from "./CollapseMenuItems";
 import MenuItems from "./MenuItems";
 
@@ -37,8 +38,7 @@ const DrawerItems = ({ setMobileOpen }) => {
         </Typography>
 
         <Typography sx={{ color: Colors.light500 }}>
-          {" "}
-          {currentShopName1.replace(/"/g, "")}
+          {removeApostrophes(currentShopName1)}
         </Typography>
       </Grid>
       <Divider sx={{ borderColor: Colors.light700 }} />

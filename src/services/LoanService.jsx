@@ -1,3 +1,4 @@
+import { removeApostrophes } from "../utils/stringUtils";
 import api from "./Api";
 
 const loanService = {
@@ -19,7 +20,7 @@ const loanService = {
   getLoansByShop: async (id) => {
     const currentShopId = localStorage.getItem("currentShopId");
     const response = await api.get(
-      `/creditbyshop/${currentShopId.replace(/"/g, "")}`
+      `/creditbyshop/${removeApostrophes(currentShopId)}`
     );
     console.log("ress>", response);
 

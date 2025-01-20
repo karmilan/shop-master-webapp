@@ -7,6 +7,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [token, setToken] = useState(null);
   const [role, setRole] = useState(null);
   const [currentShopId, setCurrentShopId] = useState();
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       setToken(response.data.token);
       setRole(response.data.user.role);
+      setUserName(response.data.user.username);
       setCurrentShopId(
         response.data.assignedShop ? response.data.assignedShop._id : null
       );
@@ -42,6 +44,10 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("user", JSON.stringify(response.data));
       localStorage.setItem("token", JSON.stringify(response.data.token));
       localStorage.setItem("role", JSON.stringify(response.data.user.role));
+      localStorage.setItem(
+        "userName",
+        JSON.stringify(response.data.user.username)
+      );
 
       localStorage.setItem(
         "currentShopId",
@@ -71,11 +77,15 @@ export const AuthProvider = ({ children }) => {
   const currentUser = user?.user;
   console.log("token>>>", token);
   console.log("role>>>", role);
+  console.log("userName----->", userName);
+  console.log("user----->", user);
 
   useEffect(() => {
     // logic to check if a user is already authenticated
     setUser(role || localStorage.getItem("role"));
+    setUserName(userName || localStorage.getItem("userName"));
     setToken(token || localStorage.getItem("token"));
+    setUser(user || localStorage.getItem("user"));
   }, []);
   return (
     <AuthContext.Provider
@@ -84,6 +94,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         currentUser,
+        userName,
         token,
         role,
         currentShopId,

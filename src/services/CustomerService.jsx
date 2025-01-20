@@ -1,3 +1,4 @@
+import { removeApostrophes } from "../utils/stringUtils";
 import api from "./Api";
 
 const customerService = {
@@ -17,7 +18,7 @@ const customerService = {
     // Assign selected shop
     const customerWithShop = {
       ...customerData,
-      shop: currentShopId.replace(/"/g, ""),
+      shop: removeApostrophes(currentShopId),
     };
     const response = await api.post("/addcustomer", customerWithShop);
     return response.data;
@@ -26,7 +27,7 @@ const customerService = {
   getCustomersByShop: async (id) => {
     const currentShopId = localStorage.getItem("currentShopId");
     const response = await api.get(
-      `/customersbyshop/${currentShopId.replace(/"/g, "")}`
+      `/customersbyshop/${removeApostrophes(currentShopId)}`
     );
     return response.data.customer;
   },

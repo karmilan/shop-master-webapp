@@ -1,3 +1,4 @@
+import { removeApostrophes } from "../utils/stringUtils";
 import api from "./Api";
 
 const cheqPaymentService = {
@@ -19,7 +20,7 @@ const cheqPaymentService = {
   getCheqPaymentsByShop: async (id) => {
     const currentShopId = localStorage.getItem("currentShopId");
     const response = await api.get(
-      `/cheqpaymentsbyshop/${currentShopId.replace(/"/g, "")}`
+      `/cheqpaymentsbyshop/${removeApostrophes(currentShopId)}`
     );
     console.log("ress>", response);
     return response.data.filteredCheqPayment;

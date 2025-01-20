@@ -16,6 +16,7 @@ const SideBar = ({
         sx={{
           width: { sm: drawerWidth },
           flexShrink: { sm: 0 },
+          zIndex: "10000",
           ..._SideBar.wrapperBox,
         }}
       >

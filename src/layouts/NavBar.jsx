@@ -37,10 +37,8 @@ const NavBar = ({ handleDrawerToggle }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            SHOP MASTER -{" "}
-            <span style={{ fontSize: "15px" }}>{import.meta.env.VITE_ENV}</span>{" "}
-            -<span style={{ fontSize: "15px" }}>{currentShopName1}</span>
+          <Typography noWrap visibility={{ sm: "hidden" }}>
+            SHOP MASTER
           </Typography>
 
           {/* --------------------------profile and settings---------------------------- */}
