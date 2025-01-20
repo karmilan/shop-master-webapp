@@ -1,9 +1,9 @@
 import { Paper, styled } from "@mui/material";
-import Theme from "../../styles/Theme.json";
 
 export const StyledPaper = styled(Paper)({
-  // backgroundColor: Theme.palette.myTheme.secondary.content,
-  backgroundColor: Theme.palette.myTheme.primary.main,
+  // background: "linear-gradient(135deg, #ffffff, #f9f9f9)",
+  background: "linear-gradient(135deg, #e3e8eb, #f9f9f9)",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1);",
   padding: "20px",
   borderRadius: "8px",
 });

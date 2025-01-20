@@ -36,3 +36,8 @@ export const _DataGridStyle = {
 export const _IconStyle = {
     color: Theme.palette.myTheme.common.white,
 };
+
+// =============================App bg=============================
+export const _AppBg = {
+    background: 'linear-gradient(to bottom right, #f5f5f5, #eaeaea)'
+};

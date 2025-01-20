@@ -57,7 +57,6 @@ const Layout = () => {
           }}
         >
           <Toolbar />
-
           <Routes>
             <Route path="/" element={<DashboardPage />} />
           </Routes>

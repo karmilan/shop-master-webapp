@@ -1,5 +1,5 @@
 import { Divider, Grid, Typography } from "@mui/material";
-import Theme from "../../styles/Theme.json";
+import Colors from "../../constants/colors";
 
 const PageHeader = ({ header, subHeader }) => {
   return (
@@ -7,19 +7,19 @@ const PageHeader = ({ header, subHeader }) => {
       <Grid>
         <Typography
           textAlign={{ xs: "center", md: "justify" }}
-          color={Theme.palette.myTheme.common.white}
+          color={Colors.text500}
           variant="h4"
         >
           {header}
         </Typography>
         <Typography
           textAlign={{ xs: "center", md: "justify" }}
-          color={Theme.palette.myTheme.common.white}
+          color={Colors.text500}
           variant="subtitle1"
         >
           {subHeader}
         </Typography>
-        <Divider sx={{ borderColor: Theme.palette.myTheme.common.white }} />
+        <Divider sx={{ borderColor: Colors.text500 }} />
         <br></br>
       </Grid>
     </>

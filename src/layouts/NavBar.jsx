@@ -24,7 +24,7 @@ const NavBar = ({ handleDrawerToggle }) => {
 
   return (
     <>
-      <AppBar position="fixed" elevation="6" sx={_NavBar.appBar}>
+      <AppBar position="fixed" sx={_NavBar.appBar}>
         <Toolbar
           sx={{ justifyContent: { xs: "space-evenly", md: "space-between" } }}
         >

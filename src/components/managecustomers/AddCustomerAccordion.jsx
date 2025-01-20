@@ -3,7 +3,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -12,7 +11,9 @@ import customerService from "../../services/CustomerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
   const [customerId, setCustomerId] = useState("");
@@ -165,8 +166,8 @@ const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Customer</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Customer</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

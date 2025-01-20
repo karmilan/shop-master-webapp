@@ -28,23 +28,23 @@ function SearchBar({ value, onChange, placeholder, clear }) {
         maxWidth: "600px",
         mr: "auto",
         borderRadius: "24px",
-        bgcolor: "transparent",
-        border: "solid 1px white",
+        bgcolor: "#f9f9f9",
+        // border: "solid 1px white",
       }}
-      elevation={1}
+      elevation={3}
     >
       <IconButton sx={{ p: "10px" }} aria-label="search">
-        <Search sx={{ color: "white" }} size={20} />
+        <Search sx={{ color: "#333333" }} size={20} />
       </IconButton>
       <InputBase
-        sx={{ ml: 1, flex: 1, color: "white" }}
+        sx={{ ml: 1, flex: 1, color: "#333333" }}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
       />
       {value && (
         <IconButton sx={{ p: "10px" }} aria-label="clear" onClick={clear}>
-          <Close sx={{ color: "white" }} size={20} />
+          <Close sx={{ color: "#333333" }} size={20} />
         </IconButton>
       )}
     </Paper>

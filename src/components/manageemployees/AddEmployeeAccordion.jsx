@@ -3,7 +3,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -13,6 +12,8 @@ import employeeService from "../../services/EmployeeService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddEmployeeAccordion = ({ setRows, fetchEmployees }) => {
   const navigate = useNavigate();
@@ -199,8 +200,8 @@ const AddEmployeeAccordion = ({ setRows, fetchEmployees }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Employee</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Employee</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

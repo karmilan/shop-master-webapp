@@ -3,7 +3,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -13,7 +12,9 @@ import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddDealerAccordion = ({ setRows, fetchDealers }) => {
   const { user, token } = useContext(AuthContext);
@@ -164,8 +165,8 @@ const AddDealerAccordion = ({ setRows, fetchDealers }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Dealer</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Dealer</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

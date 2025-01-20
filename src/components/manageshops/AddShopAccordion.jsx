@@ -3,7 +3,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
   Typography,
 } from "@mui/material";
@@ -12,6 +11,8 @@ import shopService from "../../services/ShopService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddShopAccordion = ({ setRows }) => {
   const [name, setName] = useState("");
@@ -121,8 +122,8 @@ const AddShopAccordion = ({ setRows }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Shop</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Shop</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

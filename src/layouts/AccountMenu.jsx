@@ -1,6 +1,9 @@
 import Logout from "@mui/icons-material/Logout";
 import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
+import {
+  default as Settings,
+  default as SettingsIcon,
+} from "@mui/icons-material/Settings";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
@@ -10,6 +13,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Tooltip from "@mui/material/Tooltip";
 import { useContext, useState } from "react";
+import Colors from "../constants/colors";
 import AuthContext from "../context/AuthContext";
 
 const AccountMenu = () => {
@@ -35,7 +39,14 @@ const AccountMenu = () => {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            {/* <Avatar sx={{ width: 32, height: 32 }}>M</Avatar> */}
+            <SettingsIcon
+              sx={{
+                width: 32,
+                height: 32,
+                color: { xs: Colors.light500, sm: Colors.primary700 },
+              }}
+            />
           </IconButton>
         </Tooltip>
       </Box>

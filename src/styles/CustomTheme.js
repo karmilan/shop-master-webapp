@@ -10,4 +10,9 @@ export const customTheme = createTheme({
             main: green[500],
         },
     },
+    typography: {
+        allVariants: {
+            color: 'red', // Set default color for all typography variants
+        },
+    },
 });

@@ -4,7 +4,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
   InputAdornment,
   Typography,
@@ -14,6 +13,8 @@ import profitService from "../../services/ProfitService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddProfitAccordion = ({ setRows, fetchProfits }) => {
   const [shop, setShop] = useState("");
@@ -67,6 +68,8 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
 
     try {
       const newProfit = { shop, amount, date, description };
+      console.log("newProfit--->", newProfit);
+
       await profitService.addProfit(newProfit);
       setSuccess("Profit added successfully");
       setShop("");
@@ -187,8 +190,8 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Profit</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Profit</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

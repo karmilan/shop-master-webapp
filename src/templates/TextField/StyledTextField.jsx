@@ -1,5 +1,5 @@
 import { TextField, styled } from "@mui/material";
-import Theme from "../../styles/Theme.json";
+import Colors from "../../constants/colors";
 
 export const StyledTextField = styled((props) => (
   <TextField {...props} size="small" />
@@ -13,7 +13,7 @@ export const StyledTextField = styled((props) => (
   // },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
-      borderColor: Theme.palette.myTheme.common.white,
+      borderColor: Colors.text500,
     },
     "&:hover fieldset": {
       borderColor: "#c4b7e1",
@@ -23,10 +23,10 @@ export const StyledTextField = styled((props) => (
     },
   },
   "& .MuiInputLabel-root": {
-    color: Theme.palette.myTheme.common.white,
+    color: Colors.text500,
   },
   "& .MuiInputBase-root": {
-    color: Theme.palette.myTheme.common.white,
+    color: Colors.text500,
   },
   "& .MuiPickersDay-root": {
     backgroundColor: "#ffffff", // Sets the background of calendar dates to white

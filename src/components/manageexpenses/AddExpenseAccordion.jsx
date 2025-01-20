@@ -1,10 +1,11 @@
+import { CalendarMonth } from "@mui/icons-material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   Grid,
+  InputAdornment,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -12,6 +13,8 @@ import expenseService from "../../services/ExpenseService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddExpenseAccordion = ({ setRows, fetchExpenses }) => {
   const [shop, setShop] = useState("");
@@ -66,6 +69,8 @@ const AddExpenseAccordion = ({ setRows, fetchExpenses }) => {
 
     try {
       const newExpense = { shop, category, amount, date, description };
+      console.log("newExpense--->", newExpense);
+
       await expenseService.addExpense(newExpense);
       setSuccess("Expense added successfully");
       setShop("");
@@ -162,12 +167,29 @@ const AddExpenseAccordion = ({ setRows, fetchExpenses }) => {
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <StyledTextField
+                {/* <StyledTextField
                   label="Date"
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   variant="outlined"
                   margin="normal"
+                /> */}
+
+                <StyledTextField
+                  label="Date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  margin="normal"
+                  variant="outlined"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <CalendarMonth style={{ color: "white" }} />
+                      </InputAdornment>
+                    ),
+                  }}
                 />
 
                 <StyledTextField
@@ -184,8 +206,8 @@ const AddExpenseAccordion = ({ setRows, fetchExpenses }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Expense</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Expense</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

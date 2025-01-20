@@ -4,7 +4,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   FormControl,
   Grid,
   InputAdornment,
@@ -20,7 +19,9 @@ import dealerService from "../../services/DealerService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddCashPaymentAccordion = ({ setRows, fetchCashPayments }) => {
   const { user, token } = useContext(AuthContext);
@@ -225,8 +226,8 @@ const AddCashPaymentAccordion = ({ setRows, fetchCashPayments }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button type="submit">Add Cash Payment</Button>
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn type="submit">Add Cash Payment</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

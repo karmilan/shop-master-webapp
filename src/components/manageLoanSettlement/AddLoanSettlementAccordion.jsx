@@ -3,7 +3,6 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -18,6 +17,8 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import CancelBtn from "../common/CancelButton/CancelBtn";
+import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 import RadioButtonsGroup from "../common/RadioButtonsGroup/RadioButtonsGroup";
 
 const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
@@ -275,10 +276,10 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
             {success && <Typography color="primary">{success}</Typography>}
           </AccordionDetails>
           <AccordionActions>
-            <Button>Cancel</Button>
-            <Button disabled={isExceeding ? true : false} type="submit">
+            <CancelBtn>Cancel</CancelBtn>
+            <PrimaryBtn disabled={isExceeding ? true : false} type="submit">
               Add Loan Settlement
-            </Button>
+            </PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

@@ -2,7 +2,7 @@
 import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
-import GetYearMonth from "../components/common/GetYearMonth/GetYearMonth";
+import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddExpenseAccordion from "../components/manageexpenses/AddExpenseAccordion";
 import expenseService from "../services/ExpenseService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
@@ -69,7 +69,7 @@ const ManageExpensesContainer = () => {
         ...item,
         id: item._id,
         shop: item.shop ? item.shop.name : "null",
-        date: GetYearMonth(item.date),
+        date: GetYearMonthDate(item.date),
       }));
       console.log(mappedData);
       setRows(mappedData);

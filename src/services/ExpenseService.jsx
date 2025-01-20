@@ -19,7 +19,10 @@ const expenseService = {
       ...expenseData,
       shop: currentShopId.replace(/"/g, ""),
     };
+    console.log("expenseWithShop", expenseWithShop);
     const response = await api.post("/addexpense", expenseWithShop);
+    console.log("response", response);
+
     return response.data;
   },
 
