@@ -21,6 +21,7 @@ import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import CancelBtn from "../common/CancelButton/CancelBtn";
+import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
@@ -63,6 +64,10 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     };
 
     fetchCustomers();
+
+    //--------------------------------loan book id generation--------------------------------------------
+    const lnbId = GenerateUniqueId("lnb");
+    setLbId(lnbId);
   }, []);
 
   const loanLimit = async (selectedCustomerId) => {
@@ -99,7 +104,7 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     setError("");
     setSuccess("");
 
-    if (!customer || !lbId || !creditLimit || !outstandingBalance || !status) {
+    if (!customer || !lbId || !creditLimit || !outstandingBalance) {
       setError("All fields are required");
       return;
     }
@@ -129,6 +134,9 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
       console.log("customerOptions>>>", customerOptions);
 
       // setAmount("");
+      const lnbId = GenerateUniqueId("lnb");
+      setLbId(lnbId);
+
       setCustomer(null);
       setSuccess("Loan book added successfully");
 
@@ -192,8 +200,13 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
                   label="ID"
                   margin="normal"
                   value={lbId}
-                  onChange={(e) => setLbId(e.target.value)}
+                  // onChange={(e) => setLbId(e.target.value)}
                   variant="outlined"
+                  slotProps={{
+                    input: {
+                      readOnly: true,
+                    },
+                  }}
                 />
 
                 <StyledTextField
