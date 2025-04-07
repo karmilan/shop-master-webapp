@@ -75,10 +75,10 @@ export const AuthProvider = ({ children }) => {
     navigate("/login");
   };
   const currentUser = user?.user;
-  console.log("token>>>", token);
-  console.log("role>>>", role);
-  console.log("userName----->", userName);
-  console.log("user----->", user);
+  // console.log("token>>>", token);
+  // console.log("role>>>", role);
+  // console.log("userName----->", userName);
+  // console.log("user----->", user);
 
   useEffect(() => {
     // logic to check if a user is already authenticated
@@ -86,6 +86,7 @@ export const AuthProvider = ({ children }) => {
     setUserName(userName || localStorage.getItem("userName"));
     setToken(token || localStorage.getItem("token"));
     setUser(user || localStorage.getItem("user"));
+    setCurrentShopId(currentShopId || localStorage.getItem("currentShopId"));
   }, []);
   return (
     <AuthContext.Provider

@@ -3,8 +3,8 @@ import { Box } from "@mui/material";
 import { useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
-import AddLoanAccordion from "../components/manageLoans/AddLoanAccordion";
-import loanService from "../services/LoanService";
+import AddLoanBookAccordion from "../components/manageLoanBooks/AddLoanBookAccordion";
+import loanBookService from "../services/LoanBookService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import SearchBar from "../templates/SearchBar/SearchBar";
 
@@ -33,16 +33,42 @@ const ManageLoansContainer = () => {
 
   const filteredRows = rows.filter(
     (row) =>
-      row.id.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.lbId.toLowerCase().includes(filterText.toLowerCase()) ||
       row.amount.toString().includes(filterText) ||
       row.customer.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
-    { field: "id", headerName: "ID", width: 180, editable: false },
-    { field: "customer", headerName: "Customer", width: 180, editable: true },
-    { field: "amount", headerName: "Amount", width: 100, editable: true },
+    { field: "lbId", headerName: "ID", width: 180, editable: false },
+    { field: "customer", headerName: "Customer", width: 180, editable: false },
+    {
+      field: "creditLimit",
+      headerName: "Credit Limit",
+      width: 100,
+      editable: true,
+    },
+    {
+      field: "outstandingBalance",
+      headerName: "Outstanding Balance",
+      width: 100,
+      editable: true,
+    },
+
+    {
+      field: "status",
+      headerName: "Status",
+      width: 100,
+      editable: true,
+    },
+
+    {
+      field: "isApproved",
+      headerName: "Is Approved",
+      width: 100,
+      type: "boolean",
+      editable: true,
+    },
 
     {
       field: "createdAt",
@@ -51,15 +77,18 @@ const ManageLoansContainer = () => {
     },
   ];
 
-  // --------------------------------------get all Loans function---------------------------------
-  const fetchLoans = async () => {
+  // --------------------------------------get all Loan books function---------------------------------
+  const fetchLoanBooks = async () => {
     try {
-      // const data = await loanService.getAllLoans();
-      const data = await loanService.getLoansByShop();
+      console.log("kkld");
+
+      // const data = await loanBookService.getAllLoanBooks();
+      const data = await loanBookService.getLoanBooksByShop();
+      // console.log("data", data1);
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
-        customer: item?.customer?.name,
+        customer: item?.customer?._id,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
 
@@ -72,16 +101,14 @@ const ManageLoansContainer = () => {
   };
 
   useEffect(() => {
-    fetchLoans();
+    fetchLoanBooks();
   }, []);
 
   // ------------------------------------update loan details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
-    console.log("newRow", newRow);
-
     try {
-      await loanService.updateLoans(newRow.id, newRow);
+      await loanBookService.updateLoanBooks(newRow.id, newRow);
       setRows((prevRows) =>
         prevRows.map((row) => (row.id === newRow.id ? newRow : row))
       );
@@ -100,7 +127,7 @@ const ManageLoansContainer = () => {
   // ----------------------------------------delete loan details----------------------------------------------------
   const handleDeleteClick = (id) => async () => {
     try {
-      await loanService.deleteLoans(id);
+      await loanBookService.deleteLoanBooks(id);
       setRows(rows.filter((row) => row.id !== id));
       setDeleteAlertOpen(false);
       setDeleteSnackbarOpen(true);
@@ -112,16 +139,11 @@ const ManageLoansContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddLoanAccordion setRows={setRows} fetchLoans={fetchLoans} />
+        <AddLoanBookAccordion
+          setRows={setRows}
+          fetchLoanBooks={fetchLoanBooks}
+        />
         <br />
-
-        {/* <StyledTextField
-          label="Search"
-          variant="outlined"
-          value={filterText}
-          onChange={handleFilterChange}
-          sx={{ width: "20%", mb: 2 }}
-        /> */}
 
         <Box sx={{ mb: 2 }}>
           <SearchBar

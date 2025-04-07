@@ -7,6 +7,7 @@ const UpdateSnackbar = ({ openAlert, setOpenAlert, alertSeverity }) => {
         open={openAlert} // Controlled by setOpenAlert state
         autoHideDuration={6000} // Auto-close after 6 seconds
         onClose={() => setOpenAlert(false)} // Close handler for Alert
+        sx={{ zIndex: 10000 }}
       >
         <Alert variant="filled" severity={alertSeverity}>
           {" "}

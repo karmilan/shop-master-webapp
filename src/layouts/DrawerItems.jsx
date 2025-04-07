@@ -169,6 +169,15 @@ const DrawerItems = ({ setMobileOpen }) => {
         collMenuText="Loan Management"
         collMenuIcon={<ManageAccountsIcon fontSize="small" />}
       >
+        {/* ///////////manage loan book */}
+        <MenuItems
+          isSubmenu={true}
+          menuItemText="Manage Loan Books"
+          menuItemIcon={<AddCardIcon fontSize="small" />}
+          linkTo="/loanbooks"
+          setMobileOpen={setMobileOpen}
+        />
+
         {/* ///////////manage credit */}
         <MenuItems
           isSubmenu={true}
