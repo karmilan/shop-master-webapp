@@ -84,11 +84,11 @@ const ManageLoansContainer = () => {
 
       // const data = await loanBookService.getAllLoanBooks();
       const data = await loanBookService.getLoanBooksByShop();
-      // console.log("data", data1);
+      // console.log("data", data);
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
-        customer: item?.customer?._id,
+        customer: item?.customer?.customerId,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
 

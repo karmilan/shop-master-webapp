@@ -16,7 +16,6 @@ import {
   GridRowEditStopReasons,
   GridRowModes,
 } from "@mui/x-data-grid";
-import * as React from "react";
 import { useState } from "react";
 import { StyledDataGrid } from "../../../templates/DataGrid/StyledDataGrid";
 import UpdateSnackbar from "../Snackbar/UpdateSnackbar";
@@ -176,6 +175,7 @@ const GetDataGrid = ({
         open={deleteSnackbarOpen}
         autoHideDuration={5000}
         onClose={handleDeleteSnackbarAlertClose}
+        sx={{ zIndex: 10000 }}
       >
         <Alert variant="filled" severity="error">
           Data deleted successfully!
