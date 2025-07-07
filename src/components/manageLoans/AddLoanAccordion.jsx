@@ -10,7 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import Colors from "../../constants/colors";
 import customerService from "../../services/CustomerService";
+import loanBookService from "../../services/LoanBookService";
 import loanService from "../../services/LoanService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
@@ -21,6 +23,7 @@ import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [customer, setCustomer] = useState("");
+  const [loanBook, setLoanBook] = useState("");
 
   const [amount, setAmount] = useState();
 
@@ -31,28 +34,28 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [customerCreditLimit, setCustomerCreditLimit] = useState();
   const [isExceeding, setIsExceeding] = useState(false);
 
-  // ----------fetch customers------------------
+  // ----------fetch loan books------------------
 
-  const [customerOptions, setCustomerOptions] = useState([]);
-  const [selectedCustomerOptions, setSelectedCustomerOptions] = useState();
+  const [loanBookOptions, setLoanBookOptions] = useState([]);
+  const [selectedLoanBookOptions, setSelectedLoanBookOptions] = useState();
 
   useEffect(() => {
-    // --------------------------------------get all customers function---------------------------------
-    const fetchCustomers = async () => {
+    // --------------------------------------get all loan books function---------------------------------
+    const fetchLoanBooks = async () => {
       try {
-        // const data = await customerService.getAllCustomers();
-        const data = await customerService.getCustomersByShop();
-        const customerMappedData = data.map((item) => ({
+        const data = await loanBookService.getLoanBooksByShop();
+        const lbMappedData = data.map((item) => ({
           ...item,
           id: item._id,
         }));
-        setCustomerOptions(customerMappedData);
+        setLoanBookOptions(lbMappedData);
+        console.log("lbmapdt", lbMappedData);
       } catch (err) {
-        console.log("Failed to fetch customers");
+        console.log("Failed to fetch loan books");
       }
     };
 
-    fetchCustomers();
+    fetchLoanBooks();
   }, []);
 
   const loanLimit = async (selectedCustomerId) => {
@@ -78,8 +81,8 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   };
 
   const handleChange = (event) => {
-    setSelectedCustomerOptions(event.target.value);
-    setCustomer(event.target.value);
+    setSelectedLoanBookOptions(event.target.value);
+    setLoanBook(event.target.value);
     loanLimit(event.target.value);
   };
   // -------------------------------------------
@@ -89,7 +92,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     setError("");
     setSuccess("");
 
-    if (!customer || !amount) {
+    if (!loanBook || !amount) {
       setError("All fields are required");
       return;
     }
@@ -104,27 +107,19 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
       setError("Loan amount exceeds the credit limit!");
       return;
     }
+    console.log("lo", loanBook, amount);
 
     try {
-      const newLoan = { customer, amount };
-      await loanService.addLoans(newLoan);
-      console.log("customerOptions>>>", customerOptions);
+      const newLoan = { loanBook, amount };
+      await loanService.addLoansByLoanBook(newLoan);
+      console.log("lb>>>", loanBookOptions);
 
       setAmount("");
-      setCustomer(null);
+      setLoanBook(null);
       setSuccess("Loan added successfully");
-
-      // const data = await loanService.getAllLoans();
-      // const mappedData = data.map((item) => ({
-      //   ...item,
-      //   id: item._id,
-      //   customer: item.customer ? item.customer.name : "null",
-      // }));
-
-      // setRows(mappedData);
-
       fetchLoans();
     } catch (err) {
+      console.log("err", err);
       setError("Failed to add customer");
     }
   };
@@ -152,31 +147,27 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
                 alignItems="center"
               >
                 <FormControl sx={{ width: "90%" }} size="small">
-                  <InputLabel sx={{ color: "white" }}>Customer</InputLabel>
+                  <InputLabel sx={{ color: Colors.primary500 }}>
+                    Loan Book
+                  </InputLabel>
                   <StyledSelect
-                    defaultValue="Cus"
-                    value={selectedCustomerOptions}
-                    label="Customer"
+                    value={selectedLoanBookOptions}
+                    label="Loan Book"
                     onChange={handleChange}
-                    MenuProps={{
-                      PaperProps: {
-                        sx: {
-                          backgroundColor: "#112132", // Dropdown background color
-                          color: "white", // Dropdown text color
-                        },
-                      },
-                    }}
                   >
                     <MenuItem value="" disabled>
                       Select an option
                     </MenuItem>
-                    {customerOptions.map((customerOption) => (
+                    {loanBookOptions.map((loanBookOption) => (
                       <MenuItem
-                        sx={{ color: "white", backgroundColor: "transparent" }}
-                        key={customerOption.id}
-                        value={customerOption.id}
+                        sx={{
+                          color: Colors.dark500,
+                          backgroundColor: "transparent",
+                        }}
+                        key={loanBookOption.id}
+                        value={loanBookOption.id}
                       >
-                        {customerOption.name}
+                        {loanBookOption.lbId} - {loanBookOption.customer.name}
                       </MenuItem>
                     ))}
                   </StyledSelect>

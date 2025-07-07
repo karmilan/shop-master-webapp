@@ -3,9 +3,7 @@ import {
   AccordionActions,
   AccordionDetails,
   AccordionSummary,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
@@ -14,26 +12,18 @@ import {
 import { useEffect, useState } from "react";
 import Colors from "../../constants/colors";
 import customerService from "../../services/CustomerService";
-import loanBookService from "../../services/LoanBookService";
 import loanService from "../../services/LoanService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
 import CancelBtn from "../common/CancelButton/CancelBtn";
-import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
-const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
+const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [customer, setCustomer] = useState("");
-  const [lbId, setLbId] = useState();
-  const [creditLimit, setCreditLimit] = useState();
-  const [outstandingBalance, setOutstandingBalance] = useState(0);
-  const [status, setStatus] = useState();
-  const [isApproved, setIsApproved] = useState(false);
-  const [isClosed, setIsClosed] = useState(false);
 
-  // const [amount, setAmount] = useState();
+  const [amount, setAmount] = useState();
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -64,10 +54,6 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     };
 
     fetchCustomers();
-
-    //--------------------------------loan book id generation--------------------------------------------
-    const lnbId = GenerateUniqueId("lnb");
-    setLbId(lnbId);
   }, []);
 
   const loanLimit = async (selectedCustomerId) => {
@@ -104,46 +90,43 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     setError("");
     setSuccess("");
 
-    if (!customer || !lbId || !creditLimit) {
+    if (!customer || !amount) {
       setError("All fields are required");
       return;
     }
 
-    // if (amount < 1) {
-    //   setError("Enter valid Amount");
-    //   return;
-    // }
+    if (amount < 1) {
+      setError("Enter valid Amount");
+      return;
+    }
 
-    // const currentLoanAmount = totalLoanAmount + Number(amount);
-    // if (currentLoanAmount > customerCreditLimit) {
-    //   setError("Loan amount exceeds the credit limit!");
-    //   return;
-    // }
+    const currentLoanAmount = totalLoanAmount + Number(amount);
+    if (currentLoanAmount > customerCreditLimit) {
+      setError("Loan amount exceeds the credit limit!");
+      return;
+    }
 
     try {
-      const newLoan = {
-        customer,
-        lbId,
-        creditLimit,
-        outstandingBalance,
-        status,
-        isApproved,
-        isClosed,
-      };
-      await loanBookService.addLoanBooks(newLoan);
+      const newLoan = { customer, amount };
+      await loanService.addLoans(newLoan);
       console.log("customerOptions>>>", customerOptions);
 
-      // setAmount("");
-      const lnbId = GenerateUniqueId("lnb");
-      setLbId(lnbId);
-
+      setAmount("");
       setCustomer(null);
-      setSuccess("Loan book added successfully");
+      setSuccess("Loan added successfully");
 
-      fetchLoanBooks();
+      // const data = await loanService.getAllLoans();
+      // const mappedData = data.map((item) => ({
+      //   ...item,
+      //   id: item._id,
+      //   customer: item.customer ? item.customer.name : "null",
+      // }));
+
+      // setRows(mappedData);
+
+      fetchLoans();
     } catch (err) {
       setError("Failed to add customer");
-      console.log("Failed to add customer", err);
     }
   };
 
@@ -157,7 +140,7 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Add Loan Book
+            Add Loan
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
@@ -174,9 +157,18 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
                     Customer
                   </InputLabel>
                   <StyledSelect
+                    // defaultValue="Cus"
                     value={selectedCustomerOptions}
                     label="Customer"
                     onChange={handleChange}
+                    // MenuProps={{
+                    //   PaperProps: {
+                    //     sx: {
+                    //       backgroundColor: "#112132", // Dropdown background color
+                    //       color: "white", // Dropdown text color
+                    //     },
+                    //   },
+                    // }}
                   >
                     <MenuItem value="" disabled>
                       Select an option
@@ -195,27 +187,6 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
                     ))}
                   </StyledSelect>
                 </FormControl>
-
-                <StyledTextField
-                  label="ID"
-                  margin="normal"
-                  value={lbId}
-                  // onChange={(e) => setLbId(e.target.value)}
-                  variant="outlined"
-                  slotProps={{
-                    input: {
-                      readOnly: true,
-                    },
-                  }}
-                />
-
-                <StyledTextField
-                  label="Credit Limit"
-                  margin="normal"
-                  value={creditLimit}
-                  onChange={(e) => setCreditLimit(e.target.value)}
-                  variant="outlined"
-                />
               </Grid>
 
               <Grid
@@ -223,73 +194,16 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
                 md={6}
                 container
                 direction="column"
-                justifyContent={{ xs: "center", md: "flex-start" }}
+                justifyContent="center"
                 alignItems="center"
               >
-                <FormControl sx={{ width: "90%" }} size="small">
-                  <InputLabel sx={{ color: Colors.primary500 }}>
-                    Status
-                  </InputLabel>
-                  <StyledSelect
-                    label="Status"
-                    onChange={(e) => setStatus(e.target.value)}
-                  >
-                    <MenuItem value="" disabled>
-                      Select an option
-                    </MenuItem>
-
-                    <MenuItem
-                      value="active"
-                      sx={{
-                        color: Colors.dark500,
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      Active
-                    </MenuItem>
-                    <MenuItem
-                      value="inactive"
-                      sx={{
-                        color: Colors.dark500,
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      Inactive
-                    </MenuItem>
-                  </StyledSelect>
-                </FormControl>
-
                 <StyledTextField
-                  label="outstanding Balance"
-                  margin="normal"
-                  value={outstandingBalance}
-                  // onChange={(e) => setOutstandingBalance(e.target.value)}
+                  label="Amount"
+                  type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   variant="outlined"
-                  slotProps={{
-                    input: {
-                      readOnly: true,
-                    },
-                  }}
                 />
-
-                <Grid container width="90%">
-                  <FormControlLabel
-                    label="Is Approved"
-                    sx={{ "&.MuiTypography-root": { fontSize: 20 } }}
-                    control={
-                      <Checkbox
-                        checked={isApproved}
-                        onChange={(e) => setIsApproved(e.target.checked)}
-                        sx={{
-                          "&.Mui-checked": {
-                            color: Colors.primary500,
-                          },
-                          "& .MuiSvgIcon-root": { fontSize: 30 },
-                        }}
-                      />
-                    }
-                  />
-                </Grid>
               </Grid>
             </Grid>
 
@@ -299,7 +213,7 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
           <AccordionActions>
             <CancelBtn>Cancel</CancelBtn>
             <PrimaryBtn disabled={isExceeding ? true : false} type="submit">
-              Add Loan Book
+              Add Loan
             </PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
@@ -308,4 +222,4 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
   );
 };
 
-export default AddLoanBookAccordion;
+export default AddLoanAccordion;

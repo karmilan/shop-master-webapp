@@ -36,7 +36,7 @@ const loanBookService = {
   },
 
   updateLoanBooks: async (id, loanBookData) => {
-    console.log("id", id, loanBookData);
+    // console.log("id", id, loanBookData);
 
     const response = await api.put(`/updateloanbook/${id}`, loanBookData);
     console.log("resp", response);

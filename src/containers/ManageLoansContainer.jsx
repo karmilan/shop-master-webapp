@@ -56,13 +56,13 @@ const ManageLoansContainer = () => {
     try {
       // const data = await loanService.getAllLoans();
       const data = await loanService.getLoansByShop();
+      console.log("data", data);
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
         customer: item?.customer?.name,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
-
       setRows(mappedData);
     } catch (err) {
       setError("Failed to fetch loans");
@@ -111,6 +111,7 @@ const ManageLoansContainer = () => {
 
   return (
     <>
+      <h2>lkk</h2>
       <StyledPaper>
         <AddLoanAccordion setRows={setRows} fetchLoans={fetchLoans} />
         <br />

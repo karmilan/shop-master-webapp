@@ -177,7 +177,7 @@ const GetDataGrid = ({
         onClose={handleDeleteSnackbarAlertClose}
         sx={{ zIndex: 10000 }}
       >
-        <Alert variant="filled" severity="error">
+        <Alert variant="filled" severity="success">
           Data deleted successfully!
         </Alert>
       </Snackbar>

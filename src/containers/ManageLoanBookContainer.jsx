@@ -8,7 +8,7 @@ import loanBookService from "../services/LoanBookService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import SearchBar from "../templates/SearchBar/SearchBar";
 
-const ManageLoansContainer = () => {
+const ManageLoanBookContainer = () => {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -34,37 +34,55 @@ const ManageLoansContainer = () => {
   const filteredRows = rows.filter(
     (row) =>
       row.lbId.toLowerCase().includes(filterText.toLowerCase()) ||
-      row.amount.toString().includes(filterText) ||
-      row.customer.toLowerCase().includes(filterText.toLowerCase())
+      row.customer.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.customerName.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
-    { field: "lbId", headerName: "ID", width: 180, editable: false },
-    { field: "customer", headerName: "Customer", width: 180, editable: false },
+    { field: "lbId", headerName: "ID", width: 150, editable: false },
+    { field: "customer", headerName: "Customer", width: 150, editable: false },
+    {
+      field: "customerName",
+      headerName: "Cust Name",
+      width: 150,
+      editable: false,
+    },
     {
       field: "creditLimit",
       headerName: "Credit Limit",
       width: 100,
+      type: "number",
       editable: true,
     },
     {
       field: "outstandingBalance",
       headerName: "Outstanding Balance",
       width: 100,
+      type: "number",
       editable: true,
     },
 
     {
       field: "status",
       headerName: "Status",
-      width: 100,
+      width: 80,
       editable: true,
+      type: "singleSelect",
+      valueOptions: ["active", "inactive", "settled"],
     },
 
     {
       field: "isApproved",
       headerName: "Is Approved",
+      width: 120,
+      type: "boolean",
+      editable: true,
+    },
+
+    {
+      field: "isClosed",
+      headerName: "Is Closed",
       width: 100,
       type: "boolean",
       editable: true,
@@ -73,7 +91,7 @@ const ManageLoansContainer = () => {
     {
       field: "createdAt",
       headerName: "Create Data",
-      width: 200,
+      width: 100,
     },
   ];
 
@@ -89,6 +107,7 @@ const ManageLoansContainer = () => {
         ...item,
         id: item._id,
         customer: item?.customer?.customerId,
+        customerName: item?.customer?.name,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
 
@@ -107,10 +126,30 @@ const ManageLoansContainer = () => {
   // ------------------------------------update loan details function --------------------------------------
 
   const processRowUpdate = async (newRow) => {
+    const {
+      id,
+      creditLimit,
+      isApproved,
+      isClosed,
+      outstandingBalance,
+      status,
+    } = newRow;
+
+    const updatePayload = {
+      creditLimit,
+      isApproved,
+      isClosed,
+      outstandingBalance,
+      status,
+    };
     try {
-      await loanBookService.updateLoanBooks(newRow.id, newRow);
+      // await loanBookService.updateLoanBooks(newRow.id, newRow);
+      await loanBookService.updateLoanBooks(id, updatePayload);
       setRows((prevRows) =>
-        prevRows.map((row) => (row.id === newRow.id ? newRow : row))
+        // prevRows.map((row) => (row.id === newRow.id ? newRow : row))
+        prevRows.map((row) =>
+          row.id === id ? { ...row, ...updatePayload } : row
+        )
       );
       setOpenUpdateAlert(true);
       setUpdateAlertSeverity("success");
@@ -177,4 +216,4 @@ const ManageLoansContainer = () => {
   );
 };
 
-export default ManageLoansContainer;
+export default ManageLoanBookContainer;
