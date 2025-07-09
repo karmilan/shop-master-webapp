@@ -41,6 +41,7 @@ const ManageLoansContainer = () => {
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
     { field: "id", headerName: "ID", width: 180, editable: false },
+    { field: "loanbook", headerName: "Loan Book", width: 180, editable: true },
     { field: "customer", headerName: "Customer", width: 180, editable: true },
     { field: "amount", headerName: "Amount", width: 100, editable: true },
 
@@ -60,7 +61,8 @@ const ManageLoansContainer = () => {
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
-        customer: item?.customer?.name,
+        loanbook: item?.loanBook?.lbId,
+        customer: item?.loanBook?.customer?.name,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
       setRows(mappedData);
@@ -111,7 +113,6 @@ const ManageLoansContainer = () => {
 
   return (
     <>
-      <h2>lkk</h2>
       <StyledPaper>
         <AddLoanAccordion setRows={setRows} fetchLoans={fetchLoans} />
         <br />

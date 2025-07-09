@@ -23,7 +23,7 @@ import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [customer, setCustomer] = useState("");
-  const [loanBook, setLoanBook] = useState("");
+  const [loanbook, setLoanbook] = useState("");
 
   const [amount, setAmount] = useState();
 
@@ -81,8 +81,9 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   };
 
   const handleChange = (event) => {
+    console.log("val", event.target.value.toString());
     setSelectedLoanBookOptions(event.target.value);
-    setLoanBook(event.target.value);
+    setLoanbook(event.target.value);
     loanLimit(event.target.value);
   };
   // -------------------------------------------
@@ -92,7 +93,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     setError("");
     setSuccess("");
 
-    if (!loanBook || !amount) {
+    if (!loanbook || !amount) {
       setError("All fields are required");
       return;
     }
@@ -107,15 +108,15 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
       setError("Loan amount exceeds the credit limit!");
       return;
     }
-    console.log("lo", loanBook, amount);
+    console.log("lo", loanbook, amount);
 
     try {
-      const newLoan = { loanBook, amount };
+      const newLoan = { loanbook, amount };
       await loanService.addLoansByLoanBook(newLoan);
       console.log("lb>>>", loanBookOptions);
 
       setAmount("");
-      setLoanBook(null);
+      setLoanbook(null);
       setSuccess("Loan added successfully");
       fetchLoans();
     } catch (err) {
