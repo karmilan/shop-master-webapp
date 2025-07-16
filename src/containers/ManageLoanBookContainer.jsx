@@ -178,10 +178,7 @@ const ManageLoanBookContainer = () => {
   return (
     <>
       <StyledPaper>
-        <AddLoanBookAccordion
-          setRows={setRows}
-          fetchLoanBooks={fetchLoanBooks}
-        />
+        <AddLoanBookAccordion lbRows={rows} fetchLoanBooks={fetchLoanBooks} />
         <br />
 
         <Box sx={{ mb: 2 }}>

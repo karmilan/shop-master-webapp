@@ -41,8 +41,8 @@ const ManageLoansContainer = () => {
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
     { field: "id", headerName: "ID", width: 180, editable: false },
-    { field: "loanbook", headerName: "Loan Book", width: 180, editable: true },
-    { field: "customer", headerName: "Customer", width: 180, editable: true },
+    { field: "loanbook", headerName: "Loan Book", width: 180, editable: false },
+    { field: "customer", headerName: "Customer", width: 180, editable: false },
     { field: "amount", headerName: "Amount", width: 100, editable: true },
 
     {

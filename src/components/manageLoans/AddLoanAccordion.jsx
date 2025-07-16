@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import Colors from "../../constants/colors";
-import customerService from "../../services/CustomerService";
 import loanBookService from "../../services/LoanBookService";
 import loanService from "../../services/LoanService";
 import { _IconStyle } from "../../styles/GlobalStyles";
@@ -22,7 +21,6 @@ import CancelBtn from "../common/CancelButton/CancelBtn";
 import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddLoanAccordion = ({ setRows, fetchLoans }) => {
-  const [customer, setCustomer] = useState("");
   const [loanbook, setLoanbook] = useState("");
 
   const [amount, setAmount] = useState();
@@ -31,7 +29,7 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
   const [success, setSuccess] = useState("");
 
   const [totalLoanAmount, setTotalLoanAmount] = useState();
-  const [customerCreditLimit, setCustomerCreditLimit] = useState();
+  const [loanBookCreditLimit, setLoanBookCreditLimit] = useState();
   const [isExceeding, setIsExceeding] = useState(false);
 
   // ----------fetch loan books------------------
@@ -58,14 +56,16 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     fetchLoanBooks();
   }, []);
 
-  const loanLimit = async (selectedCustomerId) => {
+  const loanLimit = async (selectedLoanBookId, creditLimit) => {
+    console.log("selectedLoanBookId", selectedLoanBookId);
+    console.log("creditLimit", creditLimit);
     ////selected customer
-    const selectedCust = await customerService.getCustomerById(
-      selectedCustomerId
-    );
+    // const selectedCust = await customerService.getCustomerById(
+    //   selectedCustomerId
+    // );
     //////////Loans by customer
-    const loansByCustomer = await loanService.getLoansByCustomer(
-      selectedCustomerId
+    const loansByCustomer = await loanService.getLoansByLoanBook(
+      selectedLoanBookId
     );
     /////////total loan amount for selected user
     const totalLoanAmount = loansByCustomer.reduce(
@@ -73,18 +73,20 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
       0
     );
     setTotalLoanAmount(totalLoanAmount);
-    setCustomerCreditLimit(selectedCust.customer.creditLimit);
-    if (totalLoanAmount > selectedCust.customer.creditLimit) {
+    setLoanBookCreditLimit(creditLimit);
+    console.log("totalLoanAmount", totalLoanAmount);
+    if (totalLoanAmount > creditLimit) {
       setError("Loan amount exceeds the credit limit!");
       setIsExceeding(true);
     }
   };
 
   const handleChange = (event) => {
-    console.log("val", event.target.value.toString());
-    setSelectedLoanBookOptions(event.target.value);
-    setLoanbook(event.target.value);
-    loanLimit(event.target.value);
+    console.log("event.target.value", event.target.value.id);
+
+    setSelectedLoanBookOptions(event.target.value.id);
+    setLoanbook(event.target.value.id);
+    loanLimit(event.target.value.id, event.target.value.creditLimit);
   };
   // -------------------------------------------
 
@@ -104,11 +106,10 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     }
 
     const currentLoanAmount = totalLoanAmount + Number(amount);
-    if (currentLoanAmount > customerCreditLimit) {
+    if (currentLoanAmount > loanBookCreditLimit) {
       setError("Loan amount exceeds the credit limit!");
       return;
     }
-    console.log("lo", loanbook, amount);
 
     try {
       const newLoan = { loanbook, amount };
@@ -166,9 +167,11 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
                           backgroundColor: "transparent",
                         }}
                         key={loanBookOption.id}
-                        value={loanBookOption.id}
+                        value={loanBookOption}
                       >
-                        {loanBookOption.lbId} - {loanBookOption.customer.name}
+                        {loanBookOption.lbId} | Customer:{"   "}
+                        {loanBookOption.customer.name} | credit limit:{"   "}
+                        {loanBookOption.creditLimit}
                       </MenuItem>
                     ))}
                   </StyledSelect>

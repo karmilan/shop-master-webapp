@@ -24,7 +24,7 @@ import CancelBtn from "../common/CancelButton/CancelBtn";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
-const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
+const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
   const [customer, setCustomer] = useState("");
   const [lbId, setLbId] = useState();
   const [creditLimit, setCreditLimit] = useState();
@@ -51,15 +51,25 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     // --------------------------------------get all customers function---------------------------------
     const fetchCustomers = async () => {
       try {
-        // const data = await customerService.getAllCustomers();
+        const lbData = await loanBookService.getLoanBooksByShop();
+        console.log(
+          "lbData",
+          lbData.filter((lb) => lb.customer._id === "686f9b1cbf9e157b0939896c")
+        );
         const data = await customerService.getCustomersByShop();
         const customerMappedData = data.map((item) => ({
           ...item,
           id: item._id,
         }));
-        setCustomerOptions(customerMappedData);
+
+        const availCustomerOptions = availableCustomerOption(
+          lbData,
+          customerMappedData
+        );
+        console.log("availCustomerOptions>>", availCustomerOptions);
+        setCustomerOptions(availCustomerOptions);
       } catch (err) {
-        console.log("Failed to fetch customers");
+        console.log("Failed to fetch customers", err);
       }
     };
 
@@ -70,6 +80,30 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
     setLbId(lnbId);
   }, []);
 
+  //------------------customers where loan book is closed or not exist loan book-------------------------
+  const availableCustomerOption = (lbData, customerMappedData) => {
+    const loanBookCustomerIDs = lbData.map((lb) => lb.customer._id);
+    console.log("loanBookCustomerIDs", loanBookCustomerIDs);
+    const uniqueCustomers = customerMappedData.filter(
+      (customer) => !loanBookCustomerIDs.includes(customer._id)
+    );
+    const closedLoanBooks = lbData.filter((lb) => lb.isClosed === true);
+    const closedLoanBookCustomers = closedLoanBooks
+      .filter((lb) => lb.isClosed === true)
+      .map((data) => ({
+        ...data.customer,
+        id: data.customer._id,
+      }));
+
+    // console.log("availableCustomerOption", [
+    //   ...uniqueCustomers,
+    //   ...closedLoanBookCustomers,
+    // ]);
+
+    return [...uniqueCustomers, ...closedLoanBookCustomers];
+  };
+
+  // ---------------------------------------loan limit------------------------------------------
   const loanLimit = async (selectedCustomerId) => {
     ////selected customer
     const selectedCust = await customerService.getCustomerById(
@@ -131,7 +165,6 @@ const AddLoanBookAccordion = ({ setRows, fetchLoanBooks }) => {
         isClosed,
       };
       await loanBookService.addLoanBooks(newLoan);
-      console.log("customerOptions>>>", customerOptions);
 
       // setAmount("");
       const lnbId = GenerateUniqueId("lnb");

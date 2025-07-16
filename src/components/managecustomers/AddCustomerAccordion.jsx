@@ -23,7 +23,7 @@ const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [creditLimit, setCreditLimit] = useState("");
+  // const [creditLimit, setCreditLimit] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -50,7 +50,6 @@ const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
         address,
         phone,
         email,
-        creditLimit,
       };
       await customerService.addCustomer(newCustomer);
       setSuccess("Customer added successfully");
@@ -60,7 +59,6 @@ const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
       setAddress("");
       setPhone("");
       setEmail("");
-      setCreditLimit("");
 
       // ------------fetch data once added----------------------
       fetchCustomers();
@@ -152,13 +150,13 @@ const AddCustomerAccordion = ({ setRows, fetchCustomers }) => {
                   variant="outlined"
                 />
 
-                <StyledTextField
+                {/* <StyledTextField
                   label="Credit Limit"
                   value={creditLimit}
                   onChange={(e) => setCreditLimit(e.target.value)}
                   margin="normal"
                   variant="outlined"
-                />
+                /> */}
               </Grid>
             </Grid>
 
