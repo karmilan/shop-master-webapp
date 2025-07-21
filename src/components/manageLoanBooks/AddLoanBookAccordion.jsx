@@ -87,18 +87,13 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
     const uniqueCustomers = customerMappedData.filter(
       (customer) => !loanBookCustomerIDs.includes(customer._id)
     );
-    const closedLoanBooks = lbData.filter((lb) => lb.isClosed === true);
-    const closedLoanBookCustomers = closedLoanBooks
+    // const closedLoanBooks = lbData.filter((lb) => lb.isClosed === true);
+    const closedLoanBookCustomers = lbData
       .filter((lb) => lb.isClosed === true)
       .map((data) => ({
         ...data.customer,
         id: data.customer._id,
       }));
-
-    // console.log("availableCustomerOption", [
-    //   ...uniqueCustomers,
-    //   ...closedLoanBookCustomers,
-    // ]);
 
     return [...uniqueCustomers, ...closedLoanBookCustomers];
   };
