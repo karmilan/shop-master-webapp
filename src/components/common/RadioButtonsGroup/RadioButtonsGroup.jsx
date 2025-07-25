@@ -5,7 +5,6 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import React from "react";
 
 const RadioButtonsGroup = ({
   rbValue,
@@ -23,16 +22,16 @@ const RadioButtonsGroup = ({
 
   return (
     <FormControl sx={{ mt: { xs: 2, sm: 2 } }}>
-      <FormLabel sx={{ color: "white" }}>Fully Settled</FormLabel>
+      <FormLabel sx={{ color: "black" }}>Fully Settled</FormLabel>
       <RadioGroup row value={rbValue} onChange={handleChange}>
         <FormControlLabel
           value={rbVal1}
           control={
             <Radio
               sx={{
-                color: "white",
+                color: "black",
                 "&.Mui-checked": {
-                  color: "white",
+                  color: "black",
                 },
               }}
             />
@@ -44,9 +43,9 @@ const RadioButtonsGroup = ({
           control={
             <Radio
               sx={{
-                color: "white",
+                color: "black",
                 "&.Mui-checked": {
-                  color: "white",
+                  color: "black",
                 },
               }}
             />

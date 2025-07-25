@@ -10,7 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+import Colors from "../../constants/colors";
 import customerService from "../../services/CustomerService";
+import loanBookService from "../../services/LoanBookService";
 import loanService from "../../services/LoanService";
 import loanSettlementService from "../../services/LoanSettlementService";
 import { _IconStyle } from "../../styles/GlobalStyles";
@@ -22,7 +24,7 @@ import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 import RadioButtonsGroup from "../common/RadioButtonsGroup/RadioButtonsGroup";
 
 const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
-  const [customer, setCustomer] = useState("");
+  const [loanBook, setLoanBook] = useState("");
 
   const [amount, setAmount] = useState();
 
@@ -32,26 +34,29 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
   const [success, setSuccess] = useState("");
 
   const [totalLoanAmount, setTotalLoanAmount] = useState();
-  const [customerCreditLimit, setCustomerCreditLimit] = useState();
+  const [loanBookCreditLimit, setLoanBookCreditLimit] = useState();
   const [isExceeding, setIsExceeding] = useState(false);
   const [settledAmounts, setSettledAmounts] = useState();
 
   // ----------fetch customers------------------
 
-  const [customerOptions, setCustomerOptions] = useState([]);
-  const [selectedCustomerOptions, setSelectedCustomerOptions] = useState();
+  const [loanBookOptions, setLoanBookOptions] = useState([]);
+  const [selectedLoanBookOptions, setSelectedLoanBookOptions] = useState();
 
   useEffect(() => {
     // --------------------------------------get all customers function---------------------------------
     const fetchCustomers = async () => {
       try {
         // const data = await customerService.getAllCustomers();
-        const data = await customerService.getCustomersByShop();
-        const customerMappedData = data.map((item) => ({
+        // const data = await customerService.getCustomersByShop();
+        const lbData = await loanBookService.getLoanBooksByShop();
+
+        const customerMappedData = lbData.map((item) => ({
           ...item,
           id: item._id,
         }));
-        setCustomerOptions(customerMappedData);
+        console.log("customerMappedData>>", customerMappedData);
+        setLoanBookOptions(customerMappedData);
       } catch (err) {
         console.log("Failed to fetch customers");
       }
@@ -90,7 +95,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
 
     setSettledAmounts(totalSettledAmount);
     setTotalLoanAmount(totalLoanAmount);
-    setCustomerCreditLimit(selectedCust.customer.creditLimit);
+    setLoanBookCreditLimit(selectedCust.customer.creditLimit);
 
     if (totalLoanAmount > selectedCust.customer.creditLimit) {
       setError("Loan amount exceeds the credit limit!");
@@ -99,8 +104,8 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
   };
 
   const handleChange = (event) => {
-    setSelectedCustomerOptions(event.target.value);
-    setCustomer(event.target.value);
+    setSelectedLoanBookOptions(event.target.value);
+    setLoanBook(event.target.value);
     loanLimit(event.target.value);
   };
   // -------------------------------------------
@@ -110,7 +115,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
     setError("");
     setSuccess("");
 
-    if (!customer || !amount) {
+    if (!loanBook || !amount) {
       setError("All fields are required");
       return;
     }
@@ -135,7 +140,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
     }
 
     try {
-      const newLoan = { customer, amount, isFullAmountSettled };
+      const newLoan = { loanBook, amount, isFullAmountSettled };
       await loanSettlementService.addLoanSettlement(newLoan);
       setAmount("");
       // setCustomer(null);
@@ -172,31 +177,27 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
                 alignItems="center"
               >
                 <FormControl sx={{ width: "90%" }} size="small">
-                  <InputLabel sx={{ color: "white" }}>Customer</InputLabel>
+                  <InputLabel sx={{ color: Colors.primary500 }}>
+                    Loan Book
+                  </InputLabel>
                   <StyledSelect
-                    defaultValue="Cus"
-                    value={selectedCustomerOptions}
+                    value={selectedLoanBookOptions}
                     label="Customer"
                     onChange={handleChange}
-                    MenuProps={{
-                      PaperProps: {
-                        sx: {
-                          backgroundColor: "#112132", // Dropdown background color
-                          color: "white", // Dropdown text color
-                        },
-                      },
-                    }}
                   >
                     <MenuItem value="" disabled>
                       Select an option
                     </MenuItem>
-                    {customerOptions.map((customerOption) => (
+                    {loanBookOptions.map((lbOpt) => (
                       <MenuItem
-                        sx={{ color: "white", backgroundColor: "transparent" }}
-                        key={customerOption.id}
-                        value={customerOption.id}
+                        sx={{
+                          color: Colors.dark500,
+                          backgroundColor: "transparent",
+                        }}
+                        key={lbOpt.id}
+                        value={lbOpt.id}
                       >
-                        {customerOption.name}
+                        {lbOpt.lbId}
                       </MenuItem>
                     ))}
                   </StyledSelect>
@@ -214,7 +215,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
                 <>
                   <StyledTextField
                     value={`Total Loan Amount: ${
-                      customer ? totalLoanAmount : "N/A"
+                      loanBook ? totalLoanAmount : "N/A"
                     }`}
                     slotProps={{
                       input: {
@@ -227,7 +228,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
 
                   <StyledTextField
                     value={`Settled Amount: ${
-                      customer ? settledAmounts : "N/A"
+                      loanBook ? settledAmounts : "N/A"
                     }`}
                     slotProps={{
                       input: {

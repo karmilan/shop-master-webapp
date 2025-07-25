@@ -41,11 +41,11 @@ const ManageLoanBookContainer = () => {
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
     { field: "lbId", headerName: "ID", width: 150, editable: false },
-    { field: "customer", headerName: "Customer", width: 150, editable: false },
+    { field: "customer", headerName: "Customer", width: 120, editable: false },
     {
       field: "customerName",
-      headerName: "Cust Name",
-      width: 150,
+      headerName: "Name",
+      width: 100,
       editable: false,
     },
     {
@@ -64,17 +64,30 @@ const ManageLoanBookContainer = () => {
     },
 
     {
-      field: "status",
-      headerName: "Status",
-      width: 80,
-      editable: true,
-      type: "singleSelect",
-      valueOptions: ["active", "inactive", "settled"],
+      field: "totalLoanAmount",
+      headerName: "Total Loan Amount",
+      width: 100,
+      type: "number",
     },
+    {
+      field: "totalSettledAmount",
+      headerName: "Total Settled Amount",
+      width: 100,
+      type: "number",
+    },
+
+    // {
+    //   field: "status",
+    //   headerName: "Status",
+    //   width: 80,
+    //   editable: true,
+    //   type: "singleSelect",
+    //   valueOptions: ["active", "inactive", "settled"],
+    // },
 
     {
       field: "isApproved",
-      headerName: "Is Approved",
+      headerName: "Approved",
       width: 120,
       type: "boolean",
       editable: true,
@@ -82,7 +95,7 @@ const ManageLoanBookContainer = () => {
 
     {
       field: "isClosed",
-      headerName: "Is Closed",
+      headerName: "Closed",
       width: 100,
       type: "boolean",
       editable: true,

@@ -114,7 +114,17 @@ const AddLoanAccordion = ({ setRows, fetchLoans }) => {
     try {
       const newLoan = { loanbook, amount };
       await loanService.addLoansByLoanBook(newLoan);
-      console.log("lb>>>", loanBookOptions);
+
+      //update total loan amount in loanbook
+      const updatedLoanBook = {
+        ...loanBookOptions,
+        totalLoanAmount: totalLoanAmount + Number(amount),
+      };
+      console.log("updatedLoanBook>>>", updatedLoanBook);
+      await loanBookService.updateLoanBooks(
+        selectedLoanBookOptions,
+        updatedLoanBook
+      );
 
       setAmount("");
       setLoanbook(null);

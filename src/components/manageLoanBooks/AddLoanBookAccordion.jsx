@@ -29,6 +29,8 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
   const [lbId, setLbId] = useState();
   const [creditLimit, setCreditLimit] = useState();
   const [outstandingBalance, setOutstandingBalance] = useState(0);
+  const [totalLoanAmount, setTotalLoanAmount] = useState(0);
+  const [totalSettledAmount, setTotalSettledAmount] = useState(0);
   const [status, setStatus] = useState();
   const [isApproved, setIsApproved] = useState(false);
   const [isClosed, setIsClosed] = useState(false);
@@ -38,7 +40,7 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [totalLoanAmount, setTotalLoanAmount] = useState();
+  // const [totalLoanAmount, setTotalLoanAmount] = useState();
   const [customerCreditLimit, setCustomerCreditLimit] = useState();
   const [isExceeding, setIsExceeding] = useState(false);
 
@@ -52,10 +54,7 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
     const fetchCustomers = async () => {
       try {
         const lbData = await loanBookService.getLoanBooksByShop();
-        console.log(
-          "lbData",
-          lbData.filter((lb) => lb.customer._id === "686f9b1cbf9e157b0939896c")
-        );
+
         const data = await customerService.getCustomersByShop();
         const customerMappedData = data.map((item) => ({
           ...item,
@@ -155,6 +154,8 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
         lbId,
         creditLimit,
         outstandingBalance,
+        totalLoanAmount,
+        totalSettledAmount,
         status,
         isApproved,
         isClosed,
@@ -236,14 +237,6 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
                     },
                   }}
                 />
-
-                <StyledTextField
-                  label="Credit Limit"
-                  margin="normal"
-                  value={creditLimit}
-                  onChange={(e) => setCreditLimit(e.target.value)}
-                  variant="outlined"
-                />
               </Grid>
 
               <Grid
@@ -254,7 +247,7 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
                 justifyContent={{ xs: "center", md: "flex-start" }}
                 alignItems="center"
               >
-                <FormControl sx={{ width: "90%" }} size="small">
+                {/* <FormControl sx={{ width: "90%" }} size="small">
                   <InputLabel sx={{ color: Colors.primary500 }}>
                     Status
                   </InputLabel>
@@ -285,9 +278,9 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
                       Inactive
                     </MenuItem>
                   </StyledSelect>
-                </FormControl>
+                </FormControl> */}
 
-                <StyledTextField
+                {/* <StyledTextField
                   label="outstanding Balance"
                   margin="normal"
                   value={outstandingBalance}
@@ -298,6 +291,14 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
                       readOnly: true,
                     },
                   }}
+                /> */}
+
+                <StyledTextField
+                  label="Credit Limit"
+                  // margin="normal"
+                  value={creditLimit}
+                  onChange={(e) => setCreditLimit(e.target.value)}
+                  variant="outlined"
                 />
 
                 <Grid container width="90%">
