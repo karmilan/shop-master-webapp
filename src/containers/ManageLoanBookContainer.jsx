@@ -121,6 +121,7 @@ const ManageLoanBookContainer = () => {
         id: item._id,
         customer: item?.customer?.customerId,
         customerName: item?.customer?.name,
+        outstandingBalance: item?.totalLoanAmount - item?.totalSettledAmount,
         createdAt: GetYearMonthDate(item.createdAt),
       }));
 

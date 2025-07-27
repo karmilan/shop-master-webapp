@@ -30,6 +30,14 @@ const loanSettlementService = {
     return response.data;
   },
 
+  addLoanSettlementForLoanBook: async (loanSettlementData) => {
+    const response = await api.post(
+      "/addloansettlementforloanbook",
+      loanSettlementData
+    );
+    return response.data;
+  },
+
   updateLoanSettlement: async (id, loanSettlementData) => {
     const response = await api.put(
       `/updateloanSettlement/${id}`,

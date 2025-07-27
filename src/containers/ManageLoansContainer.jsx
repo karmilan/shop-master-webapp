@@ -35,7 +35,8 @@ const ManageLoansContainer = () => {
     (row) =>
       row.id.toLowerCase().includes(filterText.toLowerCase()) ||
       row.amount.toString().includes(filterText) ||
-      row.customer.toLowerCase().includes(filterText.toLowerCase())
+      row.customer.toLowerCase().includes(filterText.toLowerCase()) ||
+      row.loanbook.toLowerCase().includes(filterText.toLowerCase())
   );
 
   // -------------------------------------columns for loan data grid-----------------------------
@@ -151,6 +152,7 @@ const ManageLoansContainer = () => {
           setDeleteAlertOpen={setDeleteAlertOpen}
           setDeleteSnackbarOpen={setDeleteSnackbarOpen}
           deleteSnackbarOpen={deleteSnackbarOpen}
+          editable={false}
         />
       </StyledPaper>
     </>

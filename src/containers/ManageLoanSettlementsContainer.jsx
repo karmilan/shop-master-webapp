@@ -41,6 +41,7 @@ const ManageLoanSettlementsContainer = () => {
   // -------------------------------------columns for loan data grid-----------------------------
   const columns = [
     { field: "id", headerName: "ID", width: 180, editable: false },
+    { field: "loanBook", headerName: "Loan Book", width: 180, editable: false },
     { field: "customer", headerName: "Customer", width: 180, editable: false },
     { field: "amount", headerName: "Amount", width: 100, editable: true },
     {
@@ -64,7 +65,8 @@ const ManageLoanSettlementsContainer = () => {
       const mappedData = data.map((item) => ({
         ...item,
         id: item._id,
-        customer: item?.customer?.name,
+        customer: item?.loanBook.customer?.name,
+        loanBook: item?.loanBook.lbId,
         createdAt: GetYearMonthDate(item.createdAt),
         isFullAmountSettled: item.isFullAmountSettled ? "Yes" : "No",
       }));

@@ -34,6 +34,8 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
   const [success, setSuccess] = useState("");
 
   const [totalLoanAmount, setTotalLoanAmount] = useState();
+  const [totalSettledAmount, setTotalSettledAmount] = useState();
+
   const [loanBookCreditLimit, setLoanBookCreditLimit] = useState();
   const [isExceeding, setIsExceeding] = useState(false);
   const [settledAmounts, setSettledAmounts] = useState();
@@ -104,9 +106,13 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
   };
 
   const handleChange = (event) => {
-    setSelectedLoanBookOptions(event.target.value);
-    setLoanBook(event.target.value);
-    loanLimit(event.target.value);
+    setSelectedLoanBookOptions(event.target.value.id);
+    setLoanBook(event.target.value.id);
+    // loanLimit(event.target.value.id);
+    setTotalLoanAmount(event.target.value.totalLoanAmount);
+    setTotalSettledAmount(event.target.value.totalSettledAmount);
+
+    console.log("handch>>", event.target.value);
   };
   // -------------------------------------------
 
@@ -140,16 +146,29 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
     }
 
     try {
-      const newLoan = { loanBook, amount, isFullAmountSettled };
-      await loanSettlementService.addLoanSettlement(newLoan);
+      const newLoan = { loanBook, amount };
+      await loanSettlementService.addLoanSettlementForLoanBook(newLoan);
+
+      //update total loan amount in loanbook
+      const updatedLoanBook = {
+        ...loanBookOptions,
+        totalSettledAmount: totalSettledAmount + Number(amount),
+      };
+      console.log("updatedLoanBook>>>", updatedLoanBook);
+      await loanBookService.updateLoanBooks(
+        selectedLoanBookOptions,
+        updatedLoanBook
+      );
+
       setAmount("");
       // setCustomer(null);
-      setIsFullAmountSettled(false);
+      // setIsFullAmountSettled(false);
       setSuccess("Loan added successfully");
 
       fetchLoanSettlements();
     } catch (err) {
       setError("Failed to add customer");
+      console.log("error>>", err);
     }
   };
   console.log("RbValue", isFullAmountSettled);
@@ -195,9 +214,11 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
                           backgroundColor: "transparent",
                         }}
                         key={lbOpt.id}
-                        value={lbOpt.id}
+                        value={lbOpt}
                       >
-                        {lbOpt.lbId}
+                        {lbOpt.lbId} | Customer:{"   "}
+                        {lbOpt.customer.name} | credit limit:{"   "}
+                        {lbOpt.creditLimit}
                       </MenuItem>
                     ))}
                   </StyledSelect>
@@ -228,7 +249,7 @@ const AddLoanSettlementAccordion = ({ setRows, fetchLoanSettlements }) => {
 
                   <StyledTextField
                     value={`Settled Amount: ${
-                      loanBook ? settledAmounts : "N/A"
+                      loanBook ? totalSettledAmount : "N/A"
                     }`}
                     slotProps={{
                       input: {
