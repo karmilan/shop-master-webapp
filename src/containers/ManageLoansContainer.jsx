@@ -1,14 +1,19 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddLoanAccordion from "../components/manageLoans/AddLoanAccordion";
+import AuthContext from "../context/AuthContext";
 import loanService from "../services/LoanService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import SearchBar from "../templates/SearchBar/SearchBar";
+import { removeApostrophes } from "../utils/stringUtils";
 
 const ManageLoansContainer = () => {
+  const { role } = useContext(AuthContext);
+  const currentRole = removeApostrophes(role || localStorage.getItem("role"));
+
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -152,7 +157,8 @@ const ManageLoansContainer = () => {
           setDeleteAlertOpen={setDeleteAlertOpen}
           setDeleteSnackbarOpen={setDeleteSnackbarOpen}
           deleteSnackbarOpen={deleteSnackbarOpen}
-          editable={false}
+          editable={currentRole === "admin" ? true : false}
+          deletable={currentRole === "admin" ? true : false}
         />
       </StyledPaper>
     </>

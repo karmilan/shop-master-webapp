@@ -11,8 +11,9 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Colors from "../../constants/colors";
+import AuthContext from "../../context/AuthContext";
 import customerService from "../../services/CustomerService";
 import loanBookService from "../../services/LoanBookService";
 import loanService from "../../services/LoanService";
@@ -20,11 +21,15 @@ import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
 import { StyledSelect } from "../../templates/SelectOption/StyledSelect";
 import { StyledTextField } from "../../templates/TextField/StyledTextField";
+import { removeApostrophes } from "../../utils/stringUtils";
 import CancelBtn from "../common/CancelButton/CancelBtn";
 import GenerateUniqueId from "../common/GenerateUniqueId/GenerateUniqueId";
 import PrimaryBtn from "../common/PrimaryButton/PrimaryBtn";
 
 const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
+  const { role } = useContext(AuthContext);
+  const currentRole = removeApostrophes(role || localStorage.getItem("role"));
+
   const [customer, setCustomer] = useState("");
   const [lbId, setLbId] = useState();
   const [creditLimit, setCreditLimit] = useState();
@@ -300,25 +305,48 @@ const AddLoanBookAccordion = ({ lbRows, fetchLoanBooks }) => {
                   onChange={(e) => setCreditLimit(e.target.value)}
                   variant="outlined"
                 />
-
-                <Grid container width="90%">
-                  <FormControlLabel
-                    label="Is Approved"
-                    sx={{ "&.MuiTypography-root": { fontSize: 20 } }}
-                    control={
-                      <Checkbox
-                        checked={isApproved}
-                        onChange={(e) => setIsApproved(e.target.checked)}
-                        sx={{
-                          "&.Mui-checked": {
-                            color: Colors.primary500,
-                          },
-                          "& .MuiSvgIcon-root": { fontSize: 30 },
-                        }}
-                      />
-                    }
-                  />
-                </Grid>
+                {currentRole === "admin" ? (
+                  <Grid container width="90%">
+                    <FormControlLabel
+                      label="Is Approved"
+                      sx={{
+                        "&.MuiTypography-root": { fontSize: 20 },
+                      }}
+                      control={
+                        <Checkbox
+                          checked={isApproved}
+                          onChange={(e) => setIsApproved(e.target.checked)}
+                          sx={{
+                            "&.Mui-checked": {
+                              color: Colors.primary500,
+                            },
+                            "& .MuiSvgIcon-root": { fontSize: 30 },
+                          }}
+                        />
+                      }
+                    />
+                  </Grid>
+                ) : (
+                  <Grid container width="90%">
+                    <FormControlLabel
+                      label="Is Approved"
+                      disabled
+                      sx={{
+                        "&.MuiTypography-root": { fontSize: 20 },
+                      }}
+                      control={
+                        <Checkbox
+                          sx={{
+                            "&.Mui-checked": {
+                              color: Colors.primary500,
+                            },
+                            "& .MuiSvgIcon-root": { fontSize: 30 },
+                          }}
+                        />
+                      }
+                    />
+                  </Grid>
+                )}
               </Grid>
             </Grid>
 

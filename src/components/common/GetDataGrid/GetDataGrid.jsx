@@ -134,14 +134,13 @@ const GetDataGrid = ({
             sx={{ opacity: !editable ? "0.3" : "unset" }}
             disabled={!editable}
           />
-
           <GridActionsCellItem
             icon={<DeleteIcon />}
             label="Delete"
             // onClick={handleDeleteClick(id)}
             onClick={handleClickOpen(id)}
             color="inherit"
-            sx={{ opacity: !editable ? "0.3" : "unset" }}
+            sx={{ opacity: !deletable ? "0.3" : "unset" }}
             disabled={!deletable}
           />
         </>,

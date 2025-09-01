@@ -1,14 +1,19 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddLoanBookAccordion from "../components/manageLoanBooks/AddLoanBookAccordion";
+import AuthContext from "../context/AuthContext";
 import loanBookService from "../services/LoanBookService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import SearchBar from "../templates/SearchBar/SearchBar";
+import { removeApostrophes } from "../utils/stringUtils";
 
 const ManageLoanBookContainer = () => {
+  const { role } = useContext(AuthContext);
+  const currentRole = removeApostrophes(role || localStorage.getItem("role"));
+
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -53,14 +58,14 @@ const ManageLoanBookContainer = () => {
       headerName: "Credit Limit",
       width: 100,
       type: "number",
-      editable: true,
+      editable: currentRole === "admin" ? true : false,
     },
     {
       field: "outstandingBalance",
       headerName: "Outstanding Balance",
       width: 100,
       type: "number",
-      editable: true,
+      editable: false,
     },
 
     {
@@ -90,7 +95,7 @@ const ManageLoanBookContainer = () => {
       headerName: "Approved",
       width: 120,
       type: "boolean",
-      editable: true,
+      editable: currentRole === "admin" ? true : false,
     },
 
     {
@@ -111,9 +116,6 @@ const ManageLoanBookContainer = () => {
   // --------------------------------------get all Loan books function---------------------------------
   const fetchLoanBooks = async () => {
     try {
-      console.log("kkld");
-
-      // const data = await loanBookService.getAllLoanBooks();
       const data = await loanBookService.getLoanBooksByShop();
       // console.log("data", data);
       const mappedData = data.map((item) => ({
@@ -221,6 +223,8 @@ const ManageLoanBookContainer = () => {
           setDeleteAlertOpen={setDeleteAlertOpen}
           setDeleteSnackbarOpen={setDeleteSnackbarOpen}
           deleteSnackbarOpen={deleteSnackbarOpen}
+          editable={currentRole === "admin" ? true : false}
+          deletable={currentRole === "admin" ? true : false}
         />
       </StyledPaper>
     </>

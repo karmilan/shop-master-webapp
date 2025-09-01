@@ -1,14 +1,19 @@
 // import ShopsDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GetDataGrid from "../components/common/GetDataGrid/GetDataGrid";
 import GetYearMonthDate from "../components/common/GetYearMonthDate/GetYearMonthDate";
 import AddLoanSettlementAccordion from "../components/manageLoanSettlement/AddLoanSettlementAccordion";
+import AuthContext from "../context/AuthContext";
 import loanSettlementService from "../services/LoanSettlementService";
 import { StyledPaper } from "../templates/Paper/StyledPaper";
 import SearchBar from "../templates/SearchBar/SearchBar";
+import { removeApostrophes } from "../utils/stringUtils";
 
 const ManageLoanSettlementsContainer = () => {
+  const { role } = useContext(AuthContext);
+  const currentRole = removeApostrophes(role || localStorage.getItem("role"));
+
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [loading, setLoading] = useState(true);
@@ -168,6 +173,8 @@ const ManageLoanSettlementsContainer = () => {
           setDeleteAlertOpen={setDeleteAlertOpen}
           setDeleteSnackbarOpen={setDeleteSnackbarOpen}
           deleteSnackbarOpen={deleteSnackbarOpen}
+          editable={currentRole === "admin" ? true : false}
+          deletable={currentRole === "admin" ? true : false}
         />
       </StyledPaper>
     </>
