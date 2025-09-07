@@ -84,9 +84,9 @@ const DrawerItems = ({ setMobileOpen }) => {
       {/* ---------------------------------profit management menu---------------------------------------- */}
       <MenuItems
         isSubmenu={false}
-        menuItemText="Profit Management"
+        menuItemText="Daily Sale Management"
         menuItemIcon={<MonetizationOnIcon fontSize="small" />}
-        linkTo="/profits"
+        linkTo="/daily-sales"
         setMobileOpen={setMobileOpen}
       />
 

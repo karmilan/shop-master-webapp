@@ -1,4 +1,3 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import DashboardPage from "../pages/DashboardPage";
 import ManageAllPaymentsPage from "../pages/ManageAllPaymentsPage";
@@ -28,7 +27,7 @@ const AppRoutes = () => {
         <Route path="/employees" element={<ManageEmployeesPage />} />
       </Routes>
       <Routes>
-        <Route path="/profits" element={<ManageProfitsPage />} />
+        <Route path="/daily-sales" element={<ManageProfitsPage />} />
       </Routes>
       <Routes>
         <Route path="/expenses" element={<ManageExpensesPage />} />

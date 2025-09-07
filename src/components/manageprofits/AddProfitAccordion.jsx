@@ -103,7 +103,7 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
             aria-controls="panel3-content"
             id="panel3-header"
           >
-            Add Profit
+            Add Daily Sale
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
@@ -191,7 +191,7 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
           </AccordionDetails>
           <AccordionActions>
             <CancelBtn>Cancel</CancelBtn>
-            <PrimaryBtn type="submit">Add Profit</PrimaryBtn>
+            <PrimaryBtn type="submit">Add</PrimaryBtn>
           </AccordionActions>
         </StyledAccordion>
       </form>

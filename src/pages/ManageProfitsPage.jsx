@@ -7,8 +7,8 @@ const ManageProfitsPage = () => {
     <>
       <Box>
         <PageHeader
-          header="Manage Profits"
-          subHeader="Create or manage existing profits"
+          header="Manage Daily Sales"
+          subHeader="Create or manage daily sales"
         />
         <ManageProfitsContainer />
       </Box>
