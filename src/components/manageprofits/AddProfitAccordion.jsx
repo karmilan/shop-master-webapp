@@ -8,7 +8,8 @@ import {
   InputAdornment,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useGetShop from "../../hooks/useGetShop";
 import profitService from "../../services/ProfitService";
 import { _IconStyle } from "../../styles/GlobalStyles";
 import { StyledAccordion } from "../../templates/Accordion/StyledAccordion";
@@ -30,6 +31,8 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
 
   const [shopOptions, setShopOptions] = useState([]);
   const [selectedShopOptions, setSelectedShopOptions] = useState();
+
+  const { currentShopId } = useGetShop();
 
   // useEffect(() => {
   //   // --------------------------------------get all shops function---------------------------------
@@ -61,13 +64,19 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
     setError("");
     setSuccess("");
 
-    if (!amount || !date || !description) {
+    if (!amount || !description) {
       setError("All fields are required");
       return;
     }
 
     try {
-      const newProfit = { shop, amount, date, description };
+      console.log("curr2", currentShopId);
+      const newProfit = {
+        shop: currentShopId,
+        amount,
+        date: date || new Date().toISOString().split("T")[0],
+        description,
+      };
       console.log("newProfit--->", newProfit);
 
       await profitService.addProfit(newProfit);
@@ -90,6 +99,7 @@ const AddProfitAccordion = ({ setRows, fetchProfits }) => {
       // setRows(mappedData);
     } catch (err) {
       setError("Failed to add shop");
+      console.log("err", err);
     }
   };
 

@@ -13,14 +13,7 @@ const profitService = {
   },
 
   addProfit: async (profitData) => {
-    const currentShopId = localStorage.getItem("currentShopId");
-
-    // Assign selected shop
-    const profitWithShop = {
-      ...profitData,
-      shop: removeApostrophes(currentShopId),
-    };
-    const response = await api.post("/addprofit", profitWithShop);
+    const response = await api.post("/addprofit", profitData);
     return response.data;
   },
 
